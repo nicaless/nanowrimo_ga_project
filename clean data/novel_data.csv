@@ -1,4 +1,4 @@
-,Writer Name,Novel Name,Genre,Final Word Count,Average Per Day,Winner,Synopses,url
+,Writer Name,Novel Name,Genre,Final Word Count,Daily Average,Winner,Synopses,url
 0,Nicaless,Novel: Lauren's Birthday,Genre: Young Adult,24229,807,,"
 <p></p>
 ",http://nanowrimo.org/participants/nicaless/novels/lauren-s-birthday/stats
@@ -1965,11 +1965,17 @@
 ",http://nanowrimo.org/participants/ladymage/novels/the-index-book-4-revival/stats
 599,LadyMage,"Novel: The Index, Book 3: Lineage",Genre: Fantasy,118323,"3,944",Winner!,"
 <p>In the 34th Century, New York City's everyday gets an entirely new twist when one of the premier businessmen, Jason Watson, goes missing after a series of strange events at his company that have never been resolved. Suspicions of foul play arose to the degree that Alex Kramer, the missing man's business partner, decides that it's time to call in some otherworldly help. </p>
+
  
+
 Arriella's sister disappears on the job, and her last location takes Arriella and the Mages directly back to Earth. While they are away, Emperor Rhyssius finds out that some ambitions never die...
+
  
+
 It's all about connections. 
+
  
+
 ...isn't it?
 ",http://nanowrimo.org/participants/ladymage/novels/the-index-book-3-lineage/stats
 600,LadyMage,"Novel: The Index, Book 2: Secrets",Genre: Fantasy,101654,"3,388",Winner!,"
@@ -2126,338 +2132,671 @@ It's all about connections. 
 ",http://nanowrimo.org/participants/axmxz/novels/the-odds-n-th-draft/stats
 650,AxmxZ,Novel: The Spell,Genre: Fantasy,39035,"1,301",,"
 <p><em>Description: a gender-flipped Sherlock-prequel-meets-Harry Potter tale of a diligent junior clerk in a magical ministry and her bright but undisciplined younger sister seeking to uncover a vast cover-up by the magico-industrial complex and avert environmental Apocalypse.</em></p><p>&lt;!--[if gte mso 9]&gt;&lt;xml&gt;
+
  &lt;o:OfficeDocumentSettings&gt;
+
   &lt;o:AllowPNG/&gt;
+
   &lt;o:PixelsPerInch&gt;72&lt;/o:PixelsPerInch&gt;
+
   &lt;o:TargetScreenSize&gt;1024x768&lt;/o:TargetScreenSize&gt;
+
  &lt;/o:OfficeDocumentSettings&gt;
+
 &lt;/xml&gt;&lt;![endif]--&gt;Margaret - Gretchen to her co-workers, ""Maggie"" to her bratty sister - has secured her foot on the first rung of a career ladder: an entry-level clerkship at the Department for Magical Community Liaisons - the refuge of many non-magical children of wizard families. The department is in charge of making sure the wizards remain in good standing with the US public and the US government. This is not a job to be taken lightly, as magic is inherently toxic and unpredictable, which is the main reason why so many young wizards are orphans: it is a rare wizard who manages to live past the age of 60.</p><p>Margaret's first assignment will involve investigating a recording made by a herpetologist in the Pacific Northwest. Apparently, the frogs he caught on tape reproduced, with a high degree of faithfulness, a performance of Verdi's ""La Traviata"". This would be odd enough in and of itself, except that particular performance only took place two weeks later.</p><p>Margaret sets off to Oregon to investigate. The more she looks into the matter, the more puzzling it all gets. And it's going to get even more puzzling once she gets a phone call in the middle of the night from Freshkills Academy in New York, informing her that her sister (and legal ward) Sunny is in danger of being expelled.</p><p>&lt;!--[if gte mso 9]&gt;&lt;xml&gt;
+
  &lt;w:WordDocument&gt;
+
   &lt;w:View&gt;Normal&lt;/w:View&gt;
+
   &lt;w:Zoom&gt;0&lt;/w:Zoom&gt;
+
   &lt;w:TrackMoves/&gt;
+
   &lt;w:TrackFormatting/&gt;
+
   &lt;w:DoNotShowComments/&gt;
+
   &lt;w:DoNotShowPropertyChanges/&gt;
+
   &lt;w:PunctuationKerning/&gt;
+
   &lt;w:ValidateAgainstSchemas/&gt;
+
   &lt;w:SaveIfXMLInvalid&gt;false&lt;/w:SaveIfXMLInvalid&gt;
+
   &lt;w:IgnoreMixedContent&gt;false&lt;/w:IgnoreMixedContent&gt;
+
   &lt;w:AlwaysShowPlaceholderText&gt;false&lt;/w:AlwaysShowPlaceholderText&gt;
+
   &lt;w:DoNotPromoteQF/&gt;
+
   &lt;w:LidThemeOther&gt;EN-US&lt;/w:LidThemeOther&gt;
+
   &lt;w:LidThemeAsian&gt;X-NONE&lt;/w:LidThemeAsian&gt;
+
   &lt;w:LidThemeComplexScript&gt;X-NONE&lt;/w:LidThemeComplexScript&gt;
+
   &lt;w:Compatibility&gt;
+
    &lt;w:BreakWrappedTables/&gt;
+
    &lt;w:SnapToGridInCell/&gt;
+
    &lt;w:WrapTextWithPunct/&gt;
+
    &lt;w:UseAsianBreakRules/&gt;
+
    &lt;w:DontGrowAutofit/&gt;
+
    &lt;w:SplitPgBreakAndParaMark/&gt;
+
    &lt;w:DontVertAlignCellWithSp/&gt;
+
    &lt;w:DontBreakConstrainedForcedTables/&gt;
+
    &lt;w:DontVertAlignInTxbx/&gt;
+
    &lt;w:Word11KerningPairs/&gt;
+
    &lt;w:CachedColBalance/&gt;
+
    &lt;w:UseFELayout/&gt;
+
   &lt;/w:Compatibility&gt;
+
   &lt;w:DoNotOptimizeForBrowser/&gt;
+
   &lt;m:mathPr&gt;
+
    &lt;m:mathFont m:val=""Cambria Math""/&gt;
+
    &lt;m:brkBin m:val=""before""/&gt;
+
    &lt;m:brkBinSub m:val=""--""/&gt;
+
    &lt;m:smallFrac m:val=""off""/&gt;
+
    &lt;m:dispDef/&gt;
+
    &lt;m:lMargin m:val=""0""/&gt;
+
    &lt;m:rMargin m:val=""0""/&gt;
+
    &lt;m:defJc m:val=""centerGroup""/&gt;
+
    &lt;m:wrapIndent m:val=""1440""/&gt;
+
    &lt;m:intLim m:val=""subSup""/&gt;
+
    &lt;m:naryLim m:val=""undOvr""/&gt;
+
   &lt;/m:mathPr&gt;&lt;/w:WordDocument&gt;
+
 &lt;/xml&gt;&lt;![endif]--&gt;&lt;!--[if gte mso 9]&gt;&lt;xml&gt;
+
  &lt;w:LatentStyles DefLockedState=""false"" DefUnhideWhenUsed=""true""
+
   DefSemiHidden=""true"" DefQFormat=""false"" DefPriority=""99""
+
   LatentStyleCount=""267""&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""0"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""Normal""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""9"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""heading 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""9"" QFormat=""true"" Name=""heading 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""9"" QFormat=""true"" Name=""heading 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""9"" QFormat=""true"" Name=""heading 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""9"" QFormat=""true"" Name=""heading 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""9"" QFormat=""true"" Name=""heading 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""9"" QFormat=""true"" Name=""heading 7""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""9"" QFormat=""true"" Name=""heading 8""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""9"" QFormat=""true"" Name=""heading 9""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""39"" Name=""toc 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""39"" Name=""toc 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""39"" Name=""toc 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""39"" Name=""toc 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""39"" Name=""toc 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""39"" Name=""toc 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""39"" Name=""toc 7""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""39"" Name=""toc 8""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""39"" Name=""toc 9""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""35"" QFormat=""true"" Name=""caption""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""10"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""Title""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""1"" Name=""Default Paragraph Font""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""11"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""Subtitle""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""22"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""Strong""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""20"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""Emphasis""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""59"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Table Grid""/&gt;
+
   &lt;w:LsdException Locked=""false"" UnhideWhenUsed=""false"" Name=""Placeholder Text""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""1"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""No Spacing""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""60"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Shading""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""61"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light List""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""62"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Grid""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""63"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""64"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""65"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""66"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""67"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""68"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""69"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""70"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Dark List""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""71"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Shading""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""72"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful List""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""73"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Grid""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""60"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Shading Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""61"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light List Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""62"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Grid Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""63"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 1 Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""64"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 2 Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""65"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 1 Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" UnhideWhenUsed=""false"" Name=""Revision""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""34"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""List Paragraph""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""29"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""Quote""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""30"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""Intense Quote""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""66"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 2 Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""67"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 1 Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""68"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 2 Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""69"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 3 Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""70"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Dark List Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""71"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Shading Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""72"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful List Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""73"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Grid Accent 1""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""60"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Shading Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""61"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light List Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""62"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Grid Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""63"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 1 Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""64"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 2 Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""65"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 1 Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""66"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 2 Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""67"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 1 Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""68"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 2 Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""69"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 3 Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""70"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Dark List Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""71"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Shading Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""72"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful List Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""73"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Grid Accent 2""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""60"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Shading Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""61"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light List Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""62"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Grid Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""63"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 1 Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""64"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 2 Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""65"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 1 Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""66"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 2 Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""67"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 1 Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""68"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 2 Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""69"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 3 Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""70"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Dark List Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""71"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Shading Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""72"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful List Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""73"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Grid Accent 3""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""60"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Shading Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""61"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light List Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""62"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Grid Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""63"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 1 Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""64"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 2 Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""65"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 1 Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""66"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 2 Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""67"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 1 Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""68"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 2 Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""69"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 3 Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""70"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Dark List Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""71"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Shading Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""72"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful List Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""73"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Grid Accent 4""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""60"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Shading Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""61"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light List Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""62"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Grid Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""63"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 1 Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""64"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 2 Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""65"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 1 Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""66"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 2 Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""67"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 1 Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""68"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 2 Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""69"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 3 Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""70"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Dark List Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""71"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Shading Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""72"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful List Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""73"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Grid Accent 5""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""60"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Shading Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""61"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light List Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""62"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Light Grid Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""63"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 1 Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""64"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Shading 2 Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""65"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 1 Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""66"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium List 2 Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""67"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 1 Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""68"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 2 Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""69"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Medium Grid 3 Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""70"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Dark List Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""71"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Shading Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""72"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful List Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""73"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" Name=""Colorful Grid Accent 6""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""19"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""Subtle Emphasis""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""21"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""Intense Emphasis""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""31"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""Subtle Reference""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""32"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""Intense Reference""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""33"" SemiHidden=""false""
+
    UnhideWhenUsed=""false"" QFormat=""true"" Name=""Book Title""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""37"" Name=""Bibliography""/&gt;
+
   &lt;w:LsdException Locked=""false"" Priority=""39"" QFormat=""true"" Name=""TOC Heading""/&gt;
+
  &lt;/w:LatentStyles&gt;
+
 &lt;/xml&gt;&lt;![endif]--&gt;&lt;!--[if gte mso 10]&gt;
+
 &lt;style&gt;
+
  /* Style Definitions */
+
  table.MsoNormalTable
+
 	{mso-style-name:""Table Normal"";
+
 	mso-tstyle-rowband-size:0;
+
 	mso-tstyle-colband-size:0;
+
 	mso-style-noshow:yes;
+
 	mso-style-priority:99;
+
 	mso-style-qformat:yes;
+
 	mso-style-parent:"""";
+
 	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+
 	mso-para-margin:0in;
+
 	mso-para-margin-bottom:.0001pt;
+
 	mso-pagination:widow-orphan;
+
 	font-size:11.0pt;
+
 	font-family:""Calibri"",""sans-serif"";
+
 	mso-ascii-font-family:Calibri;
+
 	mso-ascii-theme-font:minor-latin;
+
 	mso-fareast-font-family:""Times New Roman"";
+
 	mso-fareast-theme-font:minor-fareast;
+
 	mso-hansi-font-family:Calibri;
+
 	mso-hansi-theme-font:minor-latin;
+
 	mso-bidi-font-family:""Times New Roman"";
+
 	mso-bidi-theme-font:minor-bidi;}
+
 &lt;/style&gt;
+
 &lt;![endif]--&gt;</p>
 ",http://nanowrimo.org/participants/axmxz/novels/the-spell-586036/stats
 651,AxmxZ,Novel: The Odds,"Genre: Mystery, Thriller & Suspense",12108,403,,"
@@ -4352,22 +4691,39 @@ It's all about connections. 
 ",http://nanowrimo.org/participants/angel-gail-rose/novels/hero-s-nightfall/stats
 1235,Angel Gail Rose,Novel: After the Coffin,Genre: Young Adult,50028,"1,667",Winner!,"
 <p>Danika Simons witnesses a strange event in a cemetery while completing a dare. Later she becomes friends with a young man who was part of that strange event. She knows something is off about the story he has told publicly, as well as something not being right with his crush. As Danika and the boy develop a friendship, she tries to warn him away from the other girl. Will he listen to her before it is too late?</p><p>&lt;!--[if gte mso 10]&gt;
+
 &lt;style&gt;
+
  /* Style Definitions */
+
  table.MsoNormalTable
+
 	{mso-style-name:""Table Normal"";
+
 	mso-tstyle-rowband-size:0;
+
 	mso-tstyle-colband-size:0;
+
 	mso-style-noshow:yes;
+
 	mso-style-parent:"""";
+
 	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+
 	mso-para-margin:0in;
+
 	mso-para-margin-bottom:.0001pt;
+
 	mso-pagination:widow-orphan;
+
 	font-size:10.0pt;
+
 	font-family:""Times New Roman"";
+
 	mso-fareast-font-family:""Times New Roman"";}
+
 &lt;/style&gt;
+
 &lt;![endif]--&gt;</p>
 ",http://nanowrimo.org/participants/angel-gail-rose/novels/after-the-coffin/stats
 1236,Angel Gail Rose,Novel: The Wolves Of Montana,Genre: Young Adult & Youth,39230,"1,307",,"
