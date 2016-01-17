@@ -3,6 +3,7 @@
 Some NaNoWriMo vocabulary (as defined by me!) to understand:
 
 __Writer__ - A NaNoWriMo.org user that is participating in a current NaNoWriMo contest.
+__Win__ - When a writer reaches 50,000 word count goal for their novel and validates this word count with the NaNoWriMo website. 
 __Word Count/Word Count Submission__ - For a novel or a submission to that novel, the number of words recorded to have been written 
 __Submission__ - The act of updating the word count for a novel. During a contest, if there is no update for a novel on a given day, the word count submission for that novel is recorded as 0 and the total word count for a novel remains the same. NOTE: A writer my update the word count for their novel multiple times a day. The site will not record the updates until the end of the data.  The aggregate of these updates is the submission.      
 __Contest__ -  A NaNoWriMo event.  That is, when the NaNoWriMo site opens and writers may create a novel profile and begin writing and adding submissions.  
@@ -12,6 +13,8 @@ __Sponsorship__ - Writers may have their novels sponsored, with the sponsor mone
 __Novel__ - A writer's 'entry' in the NaNoWriMo contest - the thing they commit to writing during the contest.  NOTE: 'Novels' may not actually be novels.  Writers may choose to write memoirs, non-fiction, movie scripts, etc.   
 
 ### Writers - About the Data
+
+Contains basic profile information about each writer and their past NaNoWriMo statistics.
 
 There are 501 rows and 41 columns.
 
@@ -100,4 +103,31 @@ __FH Sub__ - For the current NaNoWriMo, the number of word count submissions to 
 __SH Total__ - For the current NaNoWriMo, the total word count of a novel in the second half of the contest
 
 __SH Sub__ - For the current NaNoWriMo, the number of word count submissions to a novel in the second half of the contest    
- 
+
+### Novels - About the Data
+
+Contains basic profile information about each novel and their word count statistics.
+
+There are 2122 rows and 9 columns.
+
+The data may be found [here](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/novel_data.csv).
+
+### Novels - Data Dictionary
+
+__Writer Name__ - The writer of the novel
+
+__Novel Name__ - The title of the novel
+
+__Genre__ - The genre of the novel
+
+__Final Word Count__ The final recorded word count for the novel
+
+__Daily Average__ The average recorded word count of the novel over the 30 day period of its contest
+
+__Winner__  Indicates whether the novel is a winning novel (reached 50,000 words) during its contest 
+
+__Synopses__ The novel synopses
+
+__url__ The url of the novel's stats page
+
+__Novel Date__ The date of the contest for which the novel was written
