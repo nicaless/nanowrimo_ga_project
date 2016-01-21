@@ -1051,7 +1051,7 @@ coefficients
 
 ## Next Steps
 
-Improving the model.  Feature engineering.  Particularly I want to include the text data available for the novels (genre, synopses).
+Improving the model and performing model evaluation.  More feature engineering.  Particularly I want to include the text data available for the novels (genre, synopses).
 
 Find
 
