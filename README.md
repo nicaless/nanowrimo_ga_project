@@ -27,7 +27,86 @@ __Novel__ - A writer's 'entry' in the NaNoWriMo contest - the thing they commit 
 
 The data I will use to construct this model is user data and novel data from the website.  This includes usernames, novel titles, word count, and 'Winner' labels.
 
-## HOW I SCRAPED THE DATA GOES HERE
+## Scraping NaNoWriMo Data
+
+I created a script utilizing the site's Word Count API to get word count submission history. 
+
+The trouble is, the NaNoWriMo API, as far as I know, only gets data from the most recent contest, in this case, November 2015.  This was not enough to make much of an interesting model.  
+
+Other data I wanted to incorporate in the model include a user's past daily word count averages, number of novels started, novel synopses, and whether or not they've donated to the NaNoWriMo cause.  
+
+Luckily, all the data I wanted was available on the NaNoWriMo website, but I wasn't about to click through 500+ user profiles manually entering information into a spreadsheet to get all of it.  
+
+I used Kimono to scrape most of the qualitative user data including usernames, whether they're a donor or even a volunteer [Municipal Liaison](http://nanowrimo.org/local-volunteers) for the site, if they're novels are [sponsored](http://nanowrimo.org/get-sponsored), and all the names for their past novels.  I was also able to get some quantitative data like how long they've been a NaNoWriMo member, their lifetime word count, and what years they've participated.  
+
+However, I wasn't able to get the word count data from past NaNoWriMos using Kimono Labs.  That data is presented on each novel's stats page as a bar graph rendered by JavaScript.  Kimono can't parse JavaScript.  
+
+I researched a few different ways to parse JavaScript using Python, but then I realized I only needed a single line of the JavaScript code.  So I just read the HTML document for each novel stats page as a regular text document and grabbed the line I needed.   
+
+I also wanted to extract novel synopses, but I ran into some difficulties using Kimono to grab the large amount of text from each novel stats page.  I decided it was time to switch tools.
+
+With Beautiful Soup it was really easy to navigate the HTML structure of the novel stats page, and to find the tags and attributes for the text data I needed.
+
+With all the data I needed, the next step was to process and aggregate all the information for analysis.
+
+
+### Scraping Script Guide
+The following are a description of the iPython scripts used to scrape data.
+
+[GetCurrentContestStats](https://github.com/nicaless/nanowrimo_ga_project/blob/master/scrape/get_current_contest_stats.ipynb) - Utilizes NaNoWriMo API to get data from the most recent contest
+[ScrapeNovelSynopses](https://github.com/nicaless/nanowrimo_ga_project/blob/master/scrape/scrape_novel_synopses.ipynb) - Uses Beautiful Soup to scrape each novel synopses 
+[ScrapeWCSubmissions](https://github.com/nicaless/nanowrimo_ga_project/blob/master/scrape/scrape_wc_submissions.ipynb) - Parses HTML file for a JavaScript variable that contains information about daily word count submission for each novel 
+
+### Raw Data Guide 
+
+ Data | Description | Source
+---|---|---
+[User Names](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/user_names.csv) | A list of writer's usernames | Hand collected
+[Novel Pages](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/novel_pages.csv) | A list of novels by the selected writers | Kimono Labs API
+[Novel WC Info](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/novels_wc_info.csv) | Word count stats for each of the novels | The [ScrapeWCSubmissions](https://github.com/nicaless/nanowrimo_ga_project/blob/master/scrape/scrape_wc_submissions.ipynb) script
+[Novel Names, Urls, Dates](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/novel_names_urls_dates.csv) | The novels with their respective NaNoWriMo page urls and the date they were entered into a NaNoWriMo contest | Kimono Labs API
+[Novel Meta Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/novel_meta_data.csv) | Contains more information about the novels | Kimono Labs API  
+[Basic User Profile Information](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/user_profiles_basicinfo.csv) | A writer's username, their lifetime word count, how long the have been a NaNoWriMo member | Kimono Labs API
+[Fact Sheets](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/user_profiles_factsheet.csv) | Various information a writer could share about their age, occupation, location, hobbies, sponsorship, or role as a Municipal Liaison for NaNoWriMo |  Kimono Labs API
+[Participation Information](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/user_profiles_participation.csv) | The past years a writer has participated in NaNoWriMo and whether they were winners or donors in that year | Kimono Labs API
+ 
+## The Data Processing Process
+
+After scraping all the data, the task at hand was to aggregate the information.   
+
+In three separate files, I had the following raw data about each writer:
+
+[Basic User Profile Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/user_profiles_basicinfo.csv) - A writer's username, their lifetime word count, how long the have been a NaNoWriMo member
+[Fact Sheets](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/user_profiles_factsheet.csv) - Various information a writer could share about their age, occupation, location, hobbies, sponsorship, or role as a Municipal Liaison for NaNoWriMo
+[Participation Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/user_profiles_participation.csv) - The past years a writer has participated in NaNoWriMo and whether they were winners or donors in that year.  
+
+After a bit of cleaning, I merged the data in these files by writers' usernames.  
+
+In addition to information about each writer, I also had information on each of the novels of each writer.
+
+[Novel Meta Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/novel_meta_data.csv) - Contains the name of the novel, the writer, the genre, the final word count, daily average word count, and whether or not it was a winning novel
+[Novel Word Count Info](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/novels_wc_info.csv) - Basic statistics calculated for each novel
+
+I merged these files on the novel name and also appended each novel's synopses to create a final [__novel_data.csv__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/novel_data.csv) file.
+
+Now, I needed to somehow aggregate the novel data for each writer and merge it with the other writer data.
+
+There were two different ways I aggregated the data.  In one way I took typical averages of the novel word count statistics.  In the other, I excluded novels created in the most current NaNoWriMo contest (November 2015).  I wanted to use these novels as the target of my predictions.  That is, I wanted to use the writers' past novels up to November 2014 to predict whether the novels of November 2015 would be 'winning novels' for the writer.  Thus, there are two similarly named 'user_summary' files.  
+
+For the [__user_summary__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/user_summary.csv) file, certain statistics (eg. Expected Final Word Count, Expected Daily Average) take into account data from NaNoWriMo November 2015. 
+The other file with [__'_no2015'__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/user_summary_no2015.csv) appended to the file name has this information excluded from those statistics.  
+
+For the purposes of this project, I will use the latter file for analysis and model training.
+
+### Processing Script Guide
+The following are a description of the iPython scripts used to clean and process the raw data.
+
+[FactSheetParser](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/fact_sheet_parser.ipynb) - Parses the raw Fact Sheets data 
+[ParseMemberLength](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/parsememberlength.ipynb) - Cleans member length data in the raw Basic User Profile Data
+[AppendParticipationData](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/appendparticipationdata.ipynb)/[AppendParticipationData_negate2015](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/appendparticipationdata_negate2015.ipynb) - Two similar scripts that parse the raw Participation Data and appends results to other writer data (Basic Info, Fact Sheets)
+[AggregateNovelStatsData](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/aggregate_novel_stats_data.ipynb)/[AggregateNovelStatsData_negate2015](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/aggregate_novel_stats_data_negate2015.ipynb) - Two similar scripts that aggregate novel word count statistics and appends results to other writer data(Basic Info, Fact Sheets)
+[AggregateFinalandDailyAvgs](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/aggregate%20final%20and%20daily%20avgs.ipynb)/[AggregateFinalandDailyAvgs_negate2015](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/aggregate%20final%20and%20daily%20avgs%20no%202015.ipynb) - Two similar scripts that aggregate the final word count and daily average of novels and appends results to other writer data (Basic Info, Fact Sheets)
+
 
 ## Data Dictionaries
 
@@ -389,7 +468,7 @@ writers.plot(kind='scatter', x='Member Length', y='LifetimeWordCount', c='CURREN
 ```
 
 
-![png](output_10_1.png)
+![Imgur](http://i.imgur.com/OM5Wpyc.png)
 
 
 Few writers have a written more than 1,000,000 words (or 20 NaNoWriMo winning novels) over the course of their NaNoWriMo lifetime.  The density of nonwinners for NaNoWriMo 2015 decreases as Member Length increases, and a higher Lifetime Word Count indicates higher likelihood of winning.  It makes sense that the longer one writes (Member Length) and the more words one writes (Lifetime word Count) makes one more likely to reach the NaNoWriMo writing goal.
@@ -403,7 +482,7 @@ df.plot(kind='scatter', x='Expected Daily Average', y='Expected Avg Submission',
 ```
 
 
-![png](output_13_1.png)
+![Imgur](http://i.imgur.com/VbtG1FX.png)
 
 
 It almost looks like there are clusters.  If Expected Daily Average => Expected Avg Submission, a writer is more likely to win.  It's worth noting that the minimum daily average needed to win a NaNoWriMo contest is about 1,666 (50,000 words / 30 days).
@@ -418,14 +497,7 @@ df.plot(kind='scatter', x='Participated', y='Wins', c='CURRENT WINNER', colormap
 ```
 
 
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x10895b650>
-
-
-
-
-![png](output_16_1.png)
+![Imgur](http://i.imgur.com/lBqjeFm.png)
 
 
 It looks like there may be possible clusters here as well.  Writers who have already had more than 5 wins are very likely to win again.  Also writers who have participated more than 5-10 times have better chances of winning as well.
@@ -440,7 +512,7 @@ df.plot(kind='scatter', x='Expected Num Submissions', y='Expected Daily Average'
 ```
 
 
-![png](output_19_1.png)
+![Imgur](http://i.imgur.com/BHBCI0G.png)
 
 
 Many writers seem to cluster around an Expected Daily Average of 1500-2000.  Remember, 1,666 is the minimum daily average to win a NaNoWriMo contest.  Of course, the higher an Expected Daily Average, the more likely a writer is to win the upcoming contest.  Also interesting is how the density of nonwinners decreases as Expected Num Submissions increases, so higher Expected Num Submissions may also be indicative of winning.   
@@ -456,14 +528,15 @@ df = pd.DataFrame({'loss': winlose['FW Sub'].get_group(0), 'win': winlose['FW Su
 df.plot(kind='hist', stacked=True, title = "distribution of number ofsubmissions in first week of contest")
 ```
 
-![png](output_23_1.png)
-
+![Imgur](http://i.imgur.com/TQkf7Mb.png)
 
 ```python
 winlose = writers.groupby("CURRENT WINNER")
 df = pd.DataFrame({'loss': winlose['FH Sub'].get_group(0), 'win': winlose['FH Sub'].get_group(1)})
 df.plot(kind='hist', stacked=True, title = "distribution of number of submissions in first half of contest")
 ```
+
+![Imgur](http://i.imgur.com/LRBKpWn.png)
 
 As expected, writers who submit more often in the early weeks are more likely to win.
 
@@ -476,7 +549,7 @@ df.plot(kind='scatter', x='FW Avg', y='Expected Daily Average', c='CURRENT WINNE
 
 ```
 
-![png](output_28_1.png)
+![Imgur](http://i.imgur.com/mWKMKoy.png)
 
 
 Additionally, writers whose daily average in the first week => than the Expected Daily Average of their past novels are more likely to win.
@@ -501,13 +574,7 @@ df.plot(kind='hist', stacked=True, title = "Distribution of winners and nonwinne
 
 
 
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x108f7e2d0>
-
-
-
-
-![png](output_32_1.png)
+![Imgur](http://i.imgur.com/b4jSjo2.png)
 
 
 
@@ -518,14 +585,7 @@ df.plot(kind='hist', stacked=True, title = "Distribution of winners and nonwinne
 ```
 
 
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x108e5b550>
-
-
-
-
-![png](output_33_1.png)
+![Imgur](http://i.imgur.com/zMGGwTa.png)
 
 
 It definitely seems like one is more likely to win if they are a Municipal Liaison of if their novel is sponsored!
