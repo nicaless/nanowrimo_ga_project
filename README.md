@@ -1,7 +1,7 @@
 # Predicting NaNoWriMo Winners
 
 ## Objective
-Every year in November, writers all around the world participate in National Novel Writing Month (NaNoWriMo) and try to write 50,000 words of a novel within 30 days.  They track their word count progress on the NaNoWriMo website where they may also donate to the writing cause, join 'Regions' for writing camaraderie, and display the summary of their novel in progress.  Those writers who write 50,000 words before the end of November are declared 'Winners'. 
+Every year in November, writers all around the world participate in National Novel Writing Month (NaNoWriMo) and try to write 50,000 words of a novel within 30 days.  They track their word count progress on the NaNoWriMo website where they may also donate to the writing cause, join 'Regions' for writing camaraderie, and display the summary   of their novel in progress.  Those writers who write 50,000 words before the end of November are declared 'Winners'. 
 
 My goal is to create a machine learning model that can predict whether a participating writer will be a NaNoWriMo 'winner' using data from the site.  
 
@@ -43,19 +43,20 @@ Luckily, all the data I wanted was available on the NaNoWriMo website, but I was
 
 I used Kimono Labs to scrape most of the qualitative user data including usernames, whether they're a donor or even a volunteer [Municipal Liaison](http://nanowrimo.org/local-volunteers) for the site, if they're novels are [sponsored](http://nanowrimo.org/get-sponsored), and all the names of their past novels.  I was also able to get some quantitative data such as how long they've been a NaNoWriMo member, their lifetime word count, and what years they've participated.  
 
-INSERT KIMONO LABS PICTURE
+Below is a snapshot of Kimono Labs point-and-click interface to capture the data from a NaNoWriMo profile page.  
+![Imgur](http://i.imgur.com/VcmuiS4.png)
 
 However, I wasn't able to get the word count data from past NaNoWriMos using Kimono Labs.  That data is presented on each novel's stats page as a bar graph rendered by JavaScript.  Kimono can't parse JavaScript.  
 
-INSERT PICTURE OF JAVASCRIPT GRAPH
+![Imgur](http://i.imgur.com/ghONSFF.png)
 
-I researched a few different ways to parse JavaScript using Python, but then I realized I only needed a single line of the JavaScript code.  So I just read the HTML document for each novel stats page as a regular text document and grabbed the line I needed.   
+I researched a few different ways to parse JavaScript using Python, but then I realized I only needed a single line of the JavaScript code that stored the data points for the graph.  I read the HTML document for each novel profile page as a regular text document and grabbed the line I needed.   
 
-I also wanted to extract novel synopses and excerpts, but I ran into some difficulties using Kimono to grab the large amount of text from each novel stats page.  I decided it was time to switch tools.
+I also wanted to extract novel synopses and excerpts, but I ran into some difficulties using Kimono to grab the large amount of text from each novel profile page.  I decided it was time to switch tools.
 
-INSERT PICTURE OF NOVEL SYNOPSES/EXCERPT PAGE
+![Imgur](http://i.imgur.com/0o62bzB.png)
 
-With Beautiful Soup it was really easy to navigate the HTML structure of the novel stats page, and to find the tags and attributes for the text data I needed.
+With Beautiful Soup it was really easy to navigate the HTML structure of the novel profile page, and to find the tags and attributes for the text data I needed.
 
 With all the data I needed, the next step was to process and aggregate all the information for analysis.
 
@@ -65,7 +66,7 @@ The following are a description of the iPython scripts used to scrape data.
 
 [GetCurrentContestStats](https://github.com/nicaless/nanowrimo_ga_project/blob/master/scrape/get_current_contest_stats.ipynb) - Utilizes NaNoWriMo API to get data from the most recent contest
 [ScrapeNovelSynopses](https://github.com/nicaless/nanowrimo_ga_project/blob/master/scrape/scrape_novel_synopses.ipynb) - Uses Beautiful Soup to scrape each novel synopses 
-[ScrapeNovelSynopses](https://github.com/nicaless/nanowrimo_ga_project/blob/master/scrape/scrape_novel_excerpts.ipynb) - Uses Beautiful Soup to scrape each novel excerpt
+[ScrapeNovelSynopses](https://github.com/nicaless/nanowrimo_ga_project/blob/master/scrape/scrape_novel_excerpt.ipynb) - Uses Beautiful Soup to scrape each novel excerpt
 [ScrapeWCSubmissions](https://github.com/nicaless/nanowrimo_ga_project/blob/master/scrape/scrape_wc_submissions.ipynb) - Parses HTML file for a JavaScript variable that contains information about daily word count submission for each novel 
 
 ### Raw Data Guide 
@@ -82,11 +83,26 @@ The following are a description of the iPython scripts used to scrape data.
 [Participation Information](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/user_profiles_participation.csv) | The past years a writer has participated in NaNoWriMo and whether they were winners or donors in that year | Kimono Labs API
  
 ## The Data Processing Process
-### Aggregating Writer Data
 
 After scraping all the data, the task at hand was to aggregate the information.   
 
-In three separate files, I had the following raw data about each writer:
+### Extracting Numeric Data from Novel Text Data
+
+I had the following information on each of the novels of each writer.
+
+[Novel Meta Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/novel_meta_data.csv) - Contains the name of the novel, the writer, the genre, the final word count, daily average word count, and whether or not it was a winning novel
+[Novel Word Count Info](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/novels_wc_info.csv) - Basic statistics calculated for each novel
+
+I merged these files on the novel name and also appended each novel's synopses and excerpt to create a [__novel_data.csv__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/novel_data.csv) file.
+
+There is also a great deal of information in the text data for each novel - the genre, synopses, excerpt.  I hypothesize, if a writer is well-prepared for NaNoWriMo, they will have a clear genre chosen for their novel, and their novel profile will have a well-written synopses and excerpt - signs that their novel idea is fleshed out and they've done some planning before the contest starts.  
+
+From the text data, I extracted numeric data such as number of words, unique words, paragraphs, and sentences in a synopses and excerpt.  I also calculated a reading score for the synopses and excerpt, and classified the genre of each novel as standard (fits into the usual novel genres such as Fiction, Historical, Young Adult) or non-standard (the novel hasn't been given a genre yet, it's a more obscure genre, or a combination of different genres). 
+
+I then appended this data to the other novel data in another [__novel_features__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/novel_features.csv) file.
+
+### Aggregating Writer Data
+In addition to their novels, I had the following raw data about each writer:
 
 [Basic User Profile Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/user_profiles_basicinfo.csv) - A writer's username, their lifetime word count, how long the have been a NaNoWriMo member
 [Fact Sheets](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/user_profiles_factsheet.csv) - Various information a writer could share about their age, occupation, location, hobbies, sponsorship, or role as a Municipal Liaison for NaNoWriMo
@@ -94,24 +110,12 @@ In three separate files, I had the following raw data about each writer:
 
 After a bit of cleaning, I merged the data in these files by writers' usernames.  
 
-In addition to information about each writer, I also had information on each of the novels of each writer.
-
-[Novel Meta Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/novel_meta_data.csv) - Contains the name of the novel, the writer, the genre, the final word count, daily average word count, and whether or not it was a winning novel
-[Novel Word Count Info](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/novels_wc_info.csv) - Basic statistics calculated for each novel
-
-I merged these files on the novel name and also appended each novel's synopses and excerpt to create a final [__novel_data.csv__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/novel_data.csv) file.
-
-Now, I needed to somehow aggregate the novel data for each writer and merge it with the other writer data.
+Now, I needed to somehow aggregate the major [__novel data__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/novel_data.csv) for each writer and merge it with the other writer data.
 
 There were two different ways I aggregated the data.  In one way I took typical averages of the novel word count statistics.  In the other, I excluded novels created in the most current NaNoWriMo contest (November 2015).  I wanted to use these novels as the target of my predictions.  That is, I wanted to use the writers' past novels up to November 2014 to predict whether the novels of November 2015 would be 'winning novels' for the writer.  Thus, there are two similarly named 'user_summary' files.  
 
 For the [__user_summary__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/user_summary.csv) file, certain statistics (eg. Expected Final Word Count, Expected Daily Average) take into account data from NaNoWriMo November 2015. 
 The other file with [__'_no2015'__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/user_summary_no2015.csv) appended to the file name has the November 2015 information excluded from those statistics.  
-
-### Extracting Numeric Data from Novel Text Data
-
-There is a great deal of information in the novel 
-
 
 
 ### Processing Script Guide
@@ -122,6 +126,7 @@ The following are a description of the iPython scripts used to clean and process
 [AppendParticipationData](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/appendparticipationdata.ipynb)/[AppendParticipationData_negate2015](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/appendparticipationdata_negate2015.ipynb) - Two similar scripts that parse the raw Participation Data and appends results to other writer data (Basic Info, Fact Sheets)
 [AggregateNovelStatsData](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/aggregate_novel_stats_data.ipynb)/[AggregateNovelStatsData_negate2015](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/aggregate_novel_stats_data_negate2015.ipynb) - Two similar scripts that aggregate novel word count statistics and appends results to other writer data(Basic Info, Fact Sheets)
 [AggregateFinalandDailyAvgs](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/aggregate%20final%20and%20daily%20avgs.ipynb)/[AggregateFinalandDailyAvgs_negate2015](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean/aggregate%20final%20and%20daily%20avgs%20no%202015.ipynb) - Two similar scripts that aggregate the final word count and daily average of novels and appends results to other writer data (Basic Info, Fact Sheets)
+RENAME THE FLESCH KINCAID SCRIPT(S) AND MOVE IT TO THE CLEAN FOLDER AND ADD IT HERE.
 
 
 ## Data Dictionaries
@@ -246,8 +251,19 @@ __url__ The url of the novel's stats page
 
 __Novel Date__ The date of the contest for which the novel was written
 
+__Excerpt__ The novel excerpt
 
-## Exploring the Data
+### Novel Numeric Features - About the Data
+
+Contains numeric data represeting each novel's genre, synopses, and excerpt.
+
+There are 2122 rows and __ columns.
+
+### Novel Numeric Features - Data Dictionary
+ADD THE DATA DICTIONARY AND NOTE THAT SOME COLUMNS ARE DUPLICATES IN THE OTHER FILE SO YOU'RE NOT GOING TO RELIST THEM
+
+
+## Exploring the Data (link the ipython notebook here)
 After I had constructed the data, I proceeded with some preliminary explorations with Python and matplotlib.
 
 
@@ -629,8 +645,6 @@ The ratio of winners to nonwinners for those who are MLs is 5.85714285714
 
 
 ### Now let's look at the novel data
-
-
 ```python
 novels = pd.read_csv("../clean data/novel_data.csv", index_col=0)
 novels.head()
@@ -740,8 +754,11 @@ The ratio of winners to nonwinners is 1.68734177215
 
 It's interesting that there are more winning novels than nonwinning novels while there are more winning writers for the most recent NaNoWriMo than there are nonwinning writers.  But this makes sense because writers who write more novels are more likely to have their novels reach the 50,000 word goal.
 
+MOVE THIS ABOVE TO NOVEL EXPLORATORY SCRIPT AND ADD SOME OTHER VIZs HERE
 
-## Predicting NaNoWriMo winners with Logistic Regression
+
+## Predicting NaNoWriMo winners with Logistic Regression (link to ipnb here)
+USE THE NEW LOGISTIC REGRESSION STUFF
 
 As the variable I want to predict is binary (1 if a writer is a winner, 0 if otherwise) I decided to use a logistic regression as my prediction model.  
 
@@ -1065,16 +1082,12 @@ coefficients
     array([-0.05032326,  1.89666991,  0.57005087,  0.01114819, -0.01187803,
             0.11182389,  0.07800505,  1.83989233, -0.22167569, -1.89802147])
 
-## Next Steps
+## Applying Other Models (link to ipnb here)
+including KMeans
 
-Improving the model and performing model evaluation.  More feature engineering.  Particularly I want to include the text data available for the novels (genre, synopses).
 
-Find
+## Modeling Novel Data (link to ipnb here)
 
-- whether or not there is a synopses
-- number of words in synopses
-- number of unique words
-- number of number of paragraphs
-- Flesh-Kincaid reading score for synopses
+## Genre Recommendation (link to ipnb here)
 
-Then see if these features are indicative of a novel 'winning'.  Then I can use this information to predict whether a writer will win. 
+## Conclusion
