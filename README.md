@@ -7,10 +7,14 @@ My goal is to create a machine learning model that can predict whether a partici
 
 ## Motivation
 
-I love writing and I am enjoy participating in NaNoWriMo.  This idea stems from another personal project to create my own [Word Count Tracker](http://nicaless.github.io/2015/11/09/My%20First%20Shiny%20App.html).  It started off as simply an exploratory endeavor and a way to practive visualizations in R and become familiar with R's Shiny package for interactive visualization applications.  It will be incredibly fun to recreate and extend this project using Python.  I hope to find new insights in the data by creating this predictive model.  I also hope such a model may be able to help other writers and future participants in NaNoWriMo improve their writing strategies and become motivated to continue to write. 
+I love writing and I am enjoy participating in NaNoWriMo.  This idea stems from another personal project: creating my own [Word Count Tracker](http://nicaless.github.io/2015/11/09/My%20First%20Shiny%20App.html), similar to that on the NaNoWriMo website.  
+
+INSERT PICS HERE
+
+Visualizing writing progress can motivate one to write more and reach his or her writing goals!  I hope creating this predictive model may help other writers and future NaNoWriMo participants improve their writing strategies continue to write and finish their novels. 
 
 ### NaNoWriMo vocabulary
-Some NaNoWriMo vocabulary (as defined by me!) to understand:
+Some NaNoWriMo vocabulary to understand:
 
 __Writer__ - A NaNoWriMo.org user that is participating in a current NaNoWriMo contest.
 __Win__ - When a writer reaches 50,000 word count goal for their novel and validates this word count with the NaNoWriMo website. 
@@ -37,13 +41,19 @@ Other data I wanted to incorporate in the model include a user's past daily word
 
 Luckily, all the data I wanted was available on the NaNoWriMo website, but I wasn't about to click through 500+ user profiles manually entering information into a spreadsheet to get all of it.  
 
-I used Kimono to scrape most of the qualitative user data including usernames, whether they're a donor or even a volunteer [Municipal Liaison](http://nanowrimo.org/local-volunteers) for the site, if they're novels are [sponsored](http://nanowrimo.org/get-sponsored), and all the names for their past novels.  I was also able to get some quantitative data like how long they've been a NaNoWriMo member, their lifetime word count, and what years they've participated.  
+I used Kimono Labs to scrape most of the qualitative user data including usernames, whether they're a donor or even a volunteer [Municipal Liaison](http://nanowrimo.org/local-volunteers) for the site, if they're novels are [sponsored](http://nanowrimo.org/get-sponsored), and all the names of their past novels.  I was also able to get some quantitative data such as how long they've been a NaNoWriMo member, their lifetime word count, and what years they've participated.  
+
+INSERT KIMONO LABS PICTURE
 
 However, I wasn't able to get the word count data from past NaNoWriMos using Kimono Labs.  That data is presented on each novel's stats page as a bar graph rendered by JavaScript.  Kimono can't parse JavaScript.  
 
+INSERT PICTURE OF JAVASCRIPT GRAPH
+
 I researched a few different ways to parse JavaScript using Python, but then I realized I only needed a single line of the JavaScript code.  So I just read the HTML document for each novel stats page as a regular text document and grabbed the line I needed.   
 
-I also wanted to extract novel synopses, but I ran into some difficulties using Kimono to grab the large amount of text from each novel stats page.  I decided it was time to switch tools.
+I also wanted to extract novel synopses and excerpts, but I ran into some difficulties using Kimono to grab the large amount of text from each novel stats page.  I decided it was time to switch tools.
+
+INSERT PICTURE OF NOVEL SYNOPSES/EXCERPT PAGE
 
 With Beautiful Soup it was really easy to navigate the HTML structure of the novel stats page, and to find the tags and attributes for the text data I needed.
 
@@ -55,6 +65,7 @@ The following are a description of the iPython scripts used to scrape data.
 
 [GetCurrentContestStats](https://github.com/nicaless/nanowrimo_ga_project/blob/master/scrape/get_current_contest_stats.ipynb) - Utilizes NaNoWriMo API to get data from the most recent contest
 [ScrapeNovelSynopses](https://github.com/nicaless/nanowrimo_ga_project/blob/master/scrape/scrape_novel_synopses.ipynb) - Uses Beautiful Soup to scrape each novel synopses 
+[ScrapeNovelSynopses](https://github.com/nicaless/nanowrimo_ga_project/blob/master/scrape/scrape_novel_excerpts.ipynb) - Uses Beautiful Soup to scrape each novel excerpt
 [ScrapeWCSubmissions](https://github.com/nicaless/nanowrimo_ga_project/blob/master/scrape/scrape_wc_submissions.ipynb) - Parses HTML file for a JavaScript variable that contains information about daily word count submission for each novel 
 
 ### Raw Data Guide 
@@ -71,6 +82,7 @@ The following are a description of the iPython scripts used to scrape data.
 [Participation Information](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/user_profiles_participation.csv) | The past years a writer has participated in NaNoWriMo and whether they were winners or donors in that year | Kimono Labs API
  
 ## The Data Processing Process
+### Aggregating Writer Data
 
 After scraping all the data, the task at hand was to aggregate the information.   
 
@@ -87,16 +99,20 @@ In addition to information about each writer, I also had information on each of 
 [Novel Meta Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/novel_meta_data.csv) - Contains the name of the novel, the writer, the genre, the final word count, daily average word count, and whether or not it was a winning novel
 [Novel Word Count Info](https://github.com/nicaless/nanowrimo_ga_project/blob/master/rawdata/novels_wc_info.csv) - Basic statistics calculated for each novel
 
-I merged these files on the novel name and also appended each novel's synopses to create a final [__novel_data.csv__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/novel_data.csv) file.
+I merged these files on the novel name and also appended each novel's synopses and excerpt to create a final [__novel_data.csv__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/novel_data.csv) file.
 
 Now, I needed to somehow aggregate the novel data for each writer and merge it with the other writer data.
 
 There were two different ways I aggregated the data.  In one way I took typical averages of the novel word count statistics.  In the other, I excluded novels created in the most current NaNoWriMo contest (November 2015).  I wanted to use these novels as the target of my predictions.  That is, I wanted to use the writers' past novels up to November 2014 to predict whether the novels of November 2015 would be 'winning novels' for the writer.  Thus, there are two similarly named 'user_summary' files.  
 
 For the [__user_summary__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/user_summary.csv) file, certain statistics (eg. Expected Final Word Count, Expected Daily Average) take into account data from NaNoWriMo November 2015. 
-The other file with [__'_no2015'__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/user_summary_no2015.csv) appended to the file name has this information excluded from those statistics.  
+The other file with [__'_no2015'__](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/user_summary_no2015.csv) appended to the file name has the November 2015 information excluded from those statistics.  
 
-For the purposes of this project, I will use the latter file for analysis and model training.
+### Extracting Numeric Data from Novel Text Data
+
+There is a great deal of information in the novel 
+
+
 
 ### Processing Script Guide
 The following are a description of the iPython scripts used to clean and process the raw data.
