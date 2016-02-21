@@ -2269,7 +2269,7 @@ print model_rf.score(X_test, y_test)
 
 It looks like Random Forests and Support Vector Machines do best in predicting winners and non-winners when excluding data from the current contest.
 
-## Modeling Novel Data (link to ipnb here)
+## [Modeling Novel Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/NovelsModeling-Final.ipynb)
 Now that I've created a model to predict which writers will be winners based on their past NaNoWriMo performances, let's attempt to predict which novels will be winning novels based on what little we know about them: their genre, synopsis, and excerpt.
 
 
@@ -2827,6 +2827,81 @@ print model_svc.score(pca_testX, pca_testy)
 
 So Decision Trees and Support Vector Machines don't perform much better than guessing either.   
 Maybe it just doesn't make sense to predict if a novel wins just based on it's synopses or excerpt.  Don't judge a book by it's cover I guess.  
+
+
+## [Clusters of Writers]()
+### K Means
+
+I've tried classifying writers by whether or not they've "won" or not in the next NaNoWriMo contest, but that sort of dampens the spirit of NaNoWriMo.  It's not just about winning.  So let's see what other ways to create clusters of writers with K Means.
+
+Let's again decompose the normalized data of the novel features into 2 dimensions.
+
+
+```python
+from sklearn.decomposition import PCA
+pca = PCA(n_components=2)
+features_pca = pd.DataFrame(pca.fit(features_norm).transform(features_norm))
+```
+
+### Compute Silhoutte Scores
+
+
+```python
+from sklearn.metrics import silhouette_score
+```
+
+
+```python
+s_scores = []
+k_vals = range(2,16)
+
+for k in k_vals:
+    my_km = KMeans(k)
+    my_km.fit(features_pca)
+    my_labels = my_km.labels_
+    s_scores.append(silhouette_score(features_pca,my_labels,metric='euclidean'))
+
+print s_scores
+    
+p = figure(title="Silhouette Scores",tools='')
+
+p.circle(x = k_vals,y=s_scores,size = 5,color="blue")
+
+show(p)
+```
+![Imgur](http://i.imgur.com/0fvoYHr.png)
+
+    [0.41932077425122599, 0.4727137451506, 0.49287953061698836, 0.4980019573744231, 0.42666976794677264, 0.42008475284354235, 0.42656607187123624, 0.42535577695419302, 0.41245648813796965, 0.41256441390978932, 0.43160675821878769, 0.38354959431985353, 0.43519319091547226, 0.39079375648586934]
+
+
+It looks 5 clusters produces the best silhouette score, so there are 5 real clusters in the data.
+
+
+```python
+PCA1 = features_pca[0]
+PCA2 = features_pca[1]
+
+my_km = KMeans(5)
+my_km.fit(features_pca)
+my_labels = my_km.labels_
+
+centers = my_km.cluster_centers_
+
+p = figure(title="Clusters NaNoWriMo writers",tools='')
+
+#plot actual writers
+p.circle(x = PCA1,y=PCA2,size = 5,color=colors)
+
+#plot centroids
+p.circle(x= centers[:,0],y=centers[:,1],
+        alpha=0.4,
+        color='green',
+        size=70)
+
+show(p)
+```
+![Imgur](http://i.imgur.com/57jLKlo.png)
+
 
 
 ## Genre Recommendation (link to ipnb here)
