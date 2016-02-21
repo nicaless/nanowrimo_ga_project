@@ -2829,7 +2829,7 @@ So Decision Trees and Support Vector Machines don't perform much better than gue
 Maybe it just doesn't make sense to predict if a novel wins just based on it's synopses or excerpt.  Don't judge a book by it's cover I guess.  
 
 
-## [Clusters of Writers]()
+## [Clusters of Writers](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/K%20Means.ipynb)
 ### K Means
 
 I've tried classifying writers by whether or not they've "won" or not in the next NaNoWriMo contest, but that sort of dampens the spirit of NaNoWriMo.  It's not just about winning.  So let's see what other ways to create clusters of writers with K Means.
@@ -2903,7 +2903,166 @@ show(p)
 ![Imgur](http://i.imgur.com/57jLKlo.png)
 
 
-
 ## Genre Recommendation (link to ipnb here)
+While I could not create a very accurate model for predicting whether or not a novel will win based on its synopses or excerpt, I still wanted to do something interesting with all the novel data I had.  So I decided to create a simple recommendation system that, given a writer's NaNoWriMo username, would suggest new genres for the writer to try writing for based on their past.  
+
+
+
+```python
+import pandas as pd
+import warnings
+warnings.filterwarnings("ignore")
+writer_genres = pd.read_csv("../clean data/writer_genres.csv", index_col=0)
+writer_genres.head()
+```
+
+
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Writer Name</th>
+      <th>Genres</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Nicaless</td>
+      <td>Fantasy, Young Adult</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Rachel B. Moore</td>
+      <td>Literary, Literary Fiction</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>abookishbabe</td>
+      <td>Young Adult</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>alexabexis</td>
+      <td>Romance, Horror/Supernatural, Horror &amp; Superna...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AllYellowFlowers</td>
+      <td>Literary, Literary Fiction</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+Below defines a function that calculates the jaccard distance from two different lists of genres.
+
+
+```python
+def jaccard(a, b):
+    if (type(a) == "float" or type(b) == float):
+        return 0
+    a = set(a.split(", "))
+    b = set(b.split(", "))
+    intersect = a.intersection(b)
+    union = a.union(b)
+    return float(len(intersect)) / len(union)
+
+nicaless_genres = writer_genres['Genres'][writer_genres['Writer Name'] == "Nicaless"].values[0]
+abookishbabe_genres = writer_genres['Genres'][writer_genres['Writer Name'] == "abookishbabe"].values[0]
+jaccard(nicaless_genres, abookishbabe_genres)
+```
+
+
+
+
+    0.5
+
+
+
+Here defines a function that uses the jaccard function to calculate the distance between a given writer's list of genres and all other writers' genres and returns a set of suggested genres based on the top ten closes writers.
+
+
+```python
+def getSimilar(writer):
+    my_genres = writer_genres['Genres'][writer_genres['Writer Name'] == writer].values[0]
+    
+    writers = []
+    genres = []
+    score = []
+    for i in range(0, len(writer_genres)):
+        writer_name = writer_genres['Writer Name'][i]
+        other_genres = writer_genres['Genres'][i]
+        writers.append(writer_name)
+        genres.append(other_genres)
+        score.append(jaccard(my_genres, other_genres))
+    df = pd.DataFrame(writers)
+    df['genres'] = genres
+    df['score'] = score
+    df = df[df['score'] != 1.0]
+    df = df.sort(['score'], ascending=0)
+    
+    suggested_genres = df['genres'][0:10]
+    
+    new_genres = []
+    for i in suggested_genres:
+        i = i.split(", ")
+        for j in i:
+            new_genres.append(j)
+    new_genres = (set(new_genres)).difference(set(my_genres.split(", ")))
+    # if there are no new genres to suggest, suggest the top genres
+    if len(new_genres) == 0:
+        new_genres = set(["Fantasy", "Young Adult", "Science Fiction"])
+    print "I suggest you try writing for the following genres:"
+    return new_genres
+
+```
+
+
+```python
+getSimilar("Nicaless")
+```
+
+    I suggest you try writing for the following genres:
+    {'Romance', 'Science Fiction', 'Young Adult & Youth', 'nan'}
+```python
+getSimilar("Trillian Anderson")
+```
+    I suggest you try writing for the following genres:
+    {'Fanfiction','Non-Fiction','Romance','Science Fiction','Steampunk','Thriller/Suspense','Young Adult','nan'}
+```python
+getSimilar("AmberMeyer")
+```
+
+    I suggest you try writing for the following genres:
+    {'Fantasy', 'Science Fiction', 'Young Adult'}
+
+
+```python
+getSimilar("Brandon Sanderson")
+```
+
+    I suggest you try writing for the following genres:
+    {'Romance', 'Science Fiction', 'Young Adult & Youth', 'nan'}
+
+
+
+Cool! Looks like I have a lot in common with what Brandon Sanderson writes based on our recommendations! 
+
+Of course, this recommender only works for writers already in my list of writers and their known past-written genres, but I'm hoping it's a list that will continue to expand.
+
+
+```python
+
+```
+
+
 
 ## Conclusion
+
+### Next Steps
