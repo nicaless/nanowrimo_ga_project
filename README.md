@@ -46,6 +46,8 @@
 	- [Genre Recommendation](#)
 	- [Conclusion](#)
 		- [Next Steps](#)
+
+
 ## Objective
 Every year in November, writers all around the world participate in National Novel Writing Month (NaNoWriMo) and try to write 50,000 words of a novel within 30 days.  They track their word count progress on the NaNoWriMo website where they may also donate to the writing cause, join 'Regions' for writing camaraderie, and display the summary   of their novel in progress.  Those writers who write 50,000 words before the end of November are declared 'Winners'. 
 
