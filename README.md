@@ -822,7 +822,7 @@ Trying to plot reading score of synopses against length of synopses produces thi
 
 
 
-# Predicting NaNoWriMo winners with Logistic Regression
+# [Predicting NaNoWriMo winners with Logistic Regression](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/Logistic%20Regression2.ipynb)
 
 As the variable I want to predict is binary (1 if a writer is a winner, 0 if otherwise) I decided to use a logistic regression as my prediction model.  
 
@@ -1669,9 +1669,605 @@ dt_importances.sort_values(1, ascending=False).head() # most to least predictive
 SH Total, and FH Total are the most predictive features, but these are metrics collected after the current contest has started.  Let's build a model now with just information we have from past contests and see how that works.  
 
 
-## Applying Other Models (link to ipnb here)
-including KMeans
+## Using Fewer Feaures and Applying Other Models (link to ipnb here)
 
+In my first attempt at Logistic Regression I used all the numeric features, but now I want to exclude information from the contest that has already started.  
+
+
+```python
+# delete features that would only be collected after a contest starts
+del features['Current Donor']
+del features['FW Total']
+del features['FW Sub']
+del features['FH Total']
+del features['FH Sub']
+del features['SH Total']
+del features['SH Sub']
+
+
+features.head()
+```
+
+
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Member Length</th>
+      <th>LifetimeWordCount</th>
+      <th>Age</th>
+      <th>Expected Final Word Count</th>
+      <th>Expected Daily Average</th>
+      <th>Wins</th>
+      <th>Donations</th>
+      <th>Participated</th>
+      <th>Consecutive Donor</th>
+      <th>Consecutive Wins</th>
+      <th>Consecutive Part</th>
+      <th>Num Novels</th>
+      <th>Expected Num Submissions</th>
+      <th>Expected Avg Submission</th>
+      <th>Expected Min Submission</th>
+      <th>Expected Min Day</th>
+      <th>Expected Max Submission</th>
+      <th>Expected Max Day</th>
+      <th>Expected Std Submissions</th>
+      <th>Expected Consec Subs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>50919</td>
+      <td>24</td>
+      <td>50919.000000</td>
+      <td>1697.300000</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>14.000000</td>
+      <td>3637.071429</td>
+      <td>299.0</td>
+      <td>2.000000</td>
+      <td>24935.0</td>
+      <td>28.000000</td>
+      <td>6235.712933</td>
+      <td>12.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>10</td>
+      <td>478090</td>
+      <td>NaN</td>
+      <td>47809.000000</td>
+      <td>1593.633333</td>
+      <td>8</td>
+      <td>8</td>
+      <td>10</td>
+      <td>8</td>
+      <td>7</td>
+      <td>10</td>
+      <td>10</td>
+      <td>8.300000</td>
+      <td>918.057453</td>
+      <td>42.7</td>
+      <td>7.700000</td>
+      <td>3809.0</td>
+      <td>9.000000</td>
+      <td>1002.295167</td>
+      <td>6.800000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>11</td>
+      <td>475500</td>
+      <td>NaN</td>
+      <td>43227.272727</td>
+      <td>1440.909091</td>
+      <td>7</td>
+      <td>7</td>
+      <td>11</td>
+      <td>4</td>
+      <td>4</td>
+      <td>11</td>
+      <td>11</td>
+      <td>9.272727</td>
+      <td>822.780595</td>
+      <td>36.0</td>
+      <td>6.727273</td>
+      <td>2325.0</td>
+      <td>8.545455</td>
+      <td>570.626795</td>
+      <td>8.090909</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>30428</td>
+      <td>NaN</td>
+      <td>15214.000000</td>
+      <td>507.133333</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>22.000000</td>
+      <td>678.318083</td>
+      <td>50.0</td>
+      <td>10.500000</td>
+      <td>2054.5</td>
+      <td>4.500000</td>
+      <td>538.273315</td>
+      <td>21.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+y = writers['CURRENT WINNER'].values
+```
+
+
+```python
+# inputting 0 for users without prior data for daily avg, avg submission, num submissions etc. and so are marked NaN
+features.fillna(0, inplace=True)
+features.describe()
+```
+
+
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Member Length</th>
+      <th>LifetimeWordCount</th>
+      <th>Age</th>
+      <th>Expected Final Word Count</th>
+      <th>Expected Daily Average</th>
+      <th>Wins</th>
+      <th>Donations</th>
+      <th>Participated</th>
+      <th>Consecutive Donor</th>
+      <th>Consecutive Wins</th>
+      <th>Consecutive Part</th>
+      <th>Num Novels</th>
+      <th>Expected Num Submissions</th>
+      <th>Expected Avg Submission</th>
+      <th>Expected Min Submission</th>
+      <th>Expected Min Day</th>
+      <th>Expected Max Submission</th>
+      <th>Expected Max Day</th>
+      <th>Expected Std Submissions</th>
+      <th>Expected Consec Subs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+      <td>501.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>4.212575</td>
+      <td>172552.676647</td>
+      <td>8.596806</td>
+      <td>36428.312194</td>
+      <td>1214.277073</td>
+      <td>2.606786</td>
+      <td>1.421158</td>
+      <td>3.656687</td>
+      <td>1.047904</td>
+      <td>1.960080</td>
+      <td>3.057884</td>
+      <td>3.377246</td>
+      <td>10.826177</td>
+      <td>1708.026777</td>
+      <td>73.105821</td>
+      <td>6.128300</td>
+      <td>4764.389341</td>
+      <td>10.005534</td>
+      <td>1314.411102</td>
+      <td>9.573348</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>3.255209</td>
+      <td>329113.331830</td>
+      <td>14.463648</td>
+      <td>43782.218313</td>
+      <td>1459.407277</td>
+      <td>4.651782</td>
+      <td>3.044384</td>
+      <td>4.899582</td>
+      <td>1.760029</td>
+      <td>2.539764</td>
+      <td>2.946632</td>
+      <td>3.451290</td>
+      <td>8.520344</td>
+      <td>2053.622361</td>
+      <td>1566.761571</td>
+      <td>6.145692</td>
+      <td>5727.358954</td>
+      <td>8.406292</td>
+      <td>2011.241171</td>
+      <td>8.393503</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.166667</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>-21113.500000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>1.000000</td>
+      <td>9818.000000</td>
+      <td>0.000000</td>
+      <td>7443.250000</td>
+      <td>248.108333</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>2.000000</td>
+      <td>362.750000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>955.000000</td>
+      <td>1.000000</td>
+      <td>256.685927</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>4.000000</td>
+      <td>93385.000000</td>
+      <td>0.000000</td>
+      <td>37594.333333</td>
+      <td>1253.144444</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>2.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>2.000000</td>
+      <td>2.000000</td>
+      <td>10.250000</td>
+      <td>1446.652778</td>
+      <td>85.666667</td>
+      <td>4.500000</td>
+      <td>3546.500000</td>
+      <td>9.333333</td>
+      <td>873.018486</td>
+      <td>8.500000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>6.000000</td>
+      <td>206482.000000</td>
+      <td>20.000000</td>
+      <td>50734.200000</td>
+      <td>1691.140000</td>
+      <td>3.000000</td>
+      <td>2.000000</td>
+      <td>5.000000</td>
+      <td>1.000000</td>
+      <td>3.000000</td>
+      <td>4.000000</td>
+      <td>5.000000</td>
+      <td>17.333333</td>
+      <td>2213.520000</td>
+      <td>291.500000</td>
+      <td>10.000000</td>
+      <td>6250.000000</td>
+      <td>16.200000</td>
+      <td>1516.145753</td>
+      <td>16.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>13.000000</td>
+      <td>4562712.000000</td>
+      <td>61.000000</td>
+      <td>651816.000000</td>
+      <td>21727.200000</td>
+      <td>52.000000</td>
+      <td>36.000000</td>
+      <td>52.000000</td>
+      <td>9.000000</td>
+      <td>14.000000</td>
+      <td>14.000000</td>
+      <td>26.000000</td>
+      <td>30.000000</td>
+      <td>20869.236584</td>
+      <td>5000.000000</td>
+      <td>27.666667</td>
+      <td>51238.000000</td>
+      <td>30.000000</td>
+      <td>23874.872328</td>
+      <td>30.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.cross_validation import cross_val_score
+from sklearn.cross_validation import train_test_split
+from sklearn.metrics import classification_report
+```
+
+### Normalize data
+
+
+```python
+scaler = StandardScaler()
+features_norm = scaler.fit_transform(features)
+features_norm[1]
+```
+
+
+
+
+    array([ 1.77967343,  0.92929298, -0.5949674 ,  0.26019839,  0.26019839,
+            1.16054543,  2.1631367 ,  1.29595831,  3.95393831,  1.98638802,
+            2.35830378,  1.92083955, -0.29678396, -0.38505565, -0.01942619,
+            0.25599572, -0.16697823, -0.11973645, -0.15534084, -0.33074635])
+
+
+
+### Apply Logistic Regression
+
+
+```python
+X_train, X_test, y_train, y_test = train_test_split(features_norm,y, test_size=0.2, random_state=0)
+```
+
+
+```python
+model_lr = LogisticRegression(C=5)
+print cross_val_score(model_lr,X_train, y_train,cv=10).mean()
+
+model_lr = LogisticRegression(C=5).fit(X_train, y_train)
+print model_lr.score(X_test,y_test)
+```
+
+    0.682823639775
+    0.70297029703
+
+
+This is not as accurate as when including current contest data.  We can assume then that activity in the first couple weeks of the contest is predictive of winning.  
+
+Still, let's try some other models and see how they do.
+
+
+
+### Naive Bayes
+
+
+```python
+from sklearn.naive_bayes import GaussianNB
+
+model_nb = GaussianNB()
+print cross_val_score(model_nb, X_train, y_train, cv=10).mean()
+
+model_nb.fit(X_train, y_train
+print model_nb.score(X_test, y_test)
+```
+
+    0.670064102564
+    0.673267326733
+
+
+Naive Bayes is not as accurate as Logistic Regression in this case.
+
+### SVM
+
+
+```python
+from sklearn.svm import SVC
+
+model_svc = SVC(kernel="rbf",C=1)
+print cross_val_score(model_svc, X_train, y_train, cv=10).mean()
+
+model_svc.fit(X_train, y_train)
+print model_svc.score(X_test, y_test)
+```
+
+    0.705644152595
+    0.722772277228
+
+
+This Support Vector Machine does a little bit better than the Logistic Regression.
+
+### Decision Tree
+
+
+```python
+from sklearn.tree import DecisionTreeClassifier
+```
+
+
+```python
+model_dt = DecisionTreeClassifier(max_depth=5)
+print cross_val_score(model_dt, X_train, y_train, cv=10).mean()
+
+model_dt.fit(X_train, y_train)
+print model_dt.score(X_test, y_test)
+```
+
+    0.647179487179
+    0.663366336634
+
+
+The Decision Tree did not do as well this time without the other features.
+
+
+```python
+dt_importances = pd.DataFrame(zip(features.columns, model_dt.feature_importances_))
+dt_importances.sort_values(1, ascending=False).head() # most to least predictive of being 0
+```
+
+
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>4</th>
+      <td>Expected Daily Average</td>
+      <td>0.359694</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>LifetimeWordCount</td>
+      <td>0.173496</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>Member Length</td>
+      <td>0.085099</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Expected Num Submissions</td>
+      <td>0.079384</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Expected Min Submission</td>
+      <td>0.066356</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+Without the data from the current contest, the most important features are Expected Daily Average and LifetimeWordCount, or a writer's average daily writing productivity and how much they've participated in the past.
+
+### Random Forests
+
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+```
+
+
+```python
+model_rf = RandomForestClassifier(max_depth=4, n_estimators=100, max_features=2)
+print cross_val_score(model_rf, X_train, y_train, cv=10).mean()
+
+model_rf.fit(X_train, y_train)
+print classification_report(y_test,model_rf.predict(X_test))
+print model_rf.score(X_test, y_test)
+```
+
+    0.692890869293
+                 precision    recall  f1-score   support
+    
+              0       0.72      0.89      0.80        55
+              1       0.82      0.59      0.68        46
+    
+    avg / total       0.77      0.75      0.75       101
+    
+    0.752475247525
+
+
+It looks like Random Forests and Support Vector Machines do best in predicting winners and non-winners when excluding data from the current contest.
 
 ## Modeling Novel Data (link to ipnb here)
 
