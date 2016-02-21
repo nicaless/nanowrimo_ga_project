@@ -1522,7 +1522,7 @@ print model_lr.score(X_test,y_test)
 
 This Logistic Regression correctly identified all the non-winners in the test data, and only incorrectly identified winners in the test data 8% of the time.  I'd say it's a pretty good model!
 
-### Visualize the results of the Logistic Regression PCA
+### Visualize the results of the Logistic Regression with PCA
 
 
 ```python
@@ -1669,7 +1669,7 @@ dt_importances.sort_values(1, ascending=False).head() # most to least predictive
 SH Total, and FH Total are the most predictive features, but these are metrics collected after the current contest has started.  Let's build a model now with just information we have from past contests and see how that works.  
 
 
-## Using Fewer Feaures and Applying Other Models (link to ipnb here)
+## [Using Fewer Feaures and Applying Other Models](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/Modeling%20with%20Fewer%20Features.ipynb)
 
 In my first attempt at Logistic Regression I used all the numeric features, but now I want to exclude information from the contest that has already started.  
 
@@ -2270,6 +2270,564 @@ print model_rf.score(X_test, y_test)
 It looks like Random Forests and Support Vector Machines do best in predicting winners and non-winners when excluding data from the current contest.
 
 ## Modeling Novel Data (link to ipnb here)
+Now that I've created a model to predict which writers will be winners based on their past NaNoWriMo performances, let's attempt to predict which novels will be winning novels based on what little we know about them: their genre, synopsis, and excerpt.
+
+
+```python
+novel_features = pd.read_csv("../clean data/novel_features.csv", index_col = 0)
+novel_features.head()
+```
+
+
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Writer Name</th>
+      <th>Novel Name</th>
+      <th>Genre</th>
+      <th>Final Word Count</th>
+      <th>Daily Average</th>
+      <th>Winner</th>
+      <th>Synopses</th>
+      <th>url</th>
+      <th>Novel Date</th>
+      <th>Excerpt</th>
+      <th>...</th>
+      <th>num uniques</th>
+      <th>num sentences</th>
+      <th>paragraphs</th>
+      <th>fk score</th>
+      <th>has excerpt</th>
+      <th>num words excerpt</th>
+      <th>num uniques excerpt</th>
+      <th>num sentences excerpt</th>
+      <th>paragraphs excerpt</th>
+      <th>fk score excerpt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Nicaless</td>
+      <td>Novel: Lauren's Birthday</td>
+      <td>Young Adult</td>
+      <td>24229</td>
+      <td>807</td>
+      <td>0</td>
+      <td>\n&lt;p&gt;&lt;/p&gt;\n</td>
+      <td>http://nanowrimo.org/participants/nicaless/nov...</td>
+      <td>November 2015</td>
+      <td>\n&lt;p&gt;&lt;/p&gt;\n</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Nicaless</td>
+      <td>Novel: A Mystery in the Kingdom of Aermon</td>
+      <td>Fantasy</td>
+      <td>50919</td>
+      <td>1,697</td>
+      <td>1</td>
+      <td>\n&lt;p&gt;Hitoshi is appointed the youngest Judge a...</td>
+      <td>http://nanowrimo.org/participants/nicaless/nov...</td>
+      <td>November 2014</td>
+      <td>\n&lt;p&gt;This story, funnily enough, started out a...</td>
+      <td>...</td>
+      <td>42</td>
+      <td>3</td>
+      <td>1</td>
+      <td>65.73</td>
+      <td>1</td>
+      <td>132</td>
+      <td>96</td>
+      <td>13</td>
+      <td>7</td>
+      <td>78.25</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Rachel B. Moore</td>
+      <td>Novel: Finding Fortunato</td>
+      <td>Literary</td>
+      <td>50603</td>
+      <td>1,686</td>
+      <td>1</td>
+      <td>\n&lt;p&gt;Sam and Anna Gold and their newly adoptiv...</td>
+      <td>http://nanowrimo.org/participants/rachel-b-moo...</td>
+      <td>November 2015</td>
+      <td>\n&lt;p&gt;&lt;/p&gt;\n</td>
+      <td>...</td>
+      <td>109</td>
+      <td>7</td>
+      <td>4</td>
+      <td>58.62</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Rachel B. Moore</td>
+      <td>Novel: The Residency</td>
+      <td>Literary</td>
+      <td>50425</td>
+      <td>1,680</td>
+      <td>1</td>
+      <td>\n&lt;p&gt;It's every writer's dream - an all-expens...</td>
+      <td>http://nanowrimo.org/participants/rachel-b-moo...</td>
+      <td>November 2014</td>
+      <td>\n&lt;p&gt;&lt;/p&gt;\n</td>
+      <td>...</td>
+      <td>51</td>
+      <td>4</td>
+      <td>3</td>
+      <td>65.73</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Rachel B. Moore</td>
+      <td>Novel: The Jew From Fortunato</td>
+      <td>Literary Fiction</td>
+      <td>41447</td>
+      <td>1,381</td>
+      <td>0</td>
+      <td>\n&lt;p&gt;20-something Andre Levinsky is a fish out...</td>
+      <td>http://nanowrimo.org/participants/rachel-b-moo...</td>
+      <td>November 2013</td>
+      <td>\n&lt;p&gt;&lt;/p&gt;\n</td>
+      <td>...</td>
+      <td>93</td>
+      <td>4</td>
+      <td>1</td>
+      <td>56.93</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 24 columns</p>
+</div>
+
+
+
+
+```python
+del novel_features['Novel Name']
+del novel_features['Genre']
+del novel_features['Final Word Count']
+del novel_features['Daily Average']
+del novel_features['Synopses']
+del novel_features['url']
+del novel_features['Excerpt']
+del novel_features['Writer Name']
+novel_features.columns
+```
+
+
+
+
+    Index([u'Winner', u'Novel Date', u'has genre', u'standard genre',
+           u'has_synopses', u'num words', u'num uniques', u'num sentences',
+           u'paragraphs', u'fk score', u'has excerpt', u'num words excerpt',
+           u'num uniques excerpt', u'num sentences excerpt', u'paragraphs excerpt',
+           u'fk score excerpt'],
+          dtype='object')
+
+
+
+
+```python
+novel_features.head()
+```
+
+
+
+
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Winner</th>
+      <th>Novel Date</th>
+      <th>has genre</th>
+      <th>standard genre</th>
+      <th>has_synopses</th>
+      <th>num words</th>
+      <th>num uniques</th>
+      <th>num sentences</th>
+      <th>paragraphs</th>
+      <th>fk score</th>
+      <th>has excerpt</th>
+      <th>num words excerpt</th>
+      <th>num uniques excerpt</th>
+      <th>num sentences excerpt</th>
+      <th>paragraphs excerpt</th>
+      <th>fk score excerpt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>November 2015</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>November 2014</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>44</td>
+      <td>42</td>
+      <td>3</td>
+      <td>1</td>
+      <td>65.73</td>
+      <td>1</td>
+      <td>132</td>
+      <td>96</td>
+      <td>13</td>
+      <td>7</td>
+      <td>78.25</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>November 2015</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>153</td>
+      <td>109</td>
+      <td>7</td>
+      <td>4</td>
+      <td>58.62</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>November 2014</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>59</td>
+      <td>51</td>
+      <td>4</td>
+      <td>3</td>
+      <td>65.73</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>November 2013</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>124</td>
+      <td>93</td>
+      <td>4</td>
+      <td>1</td>
+      <td>56.93</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+print "The fraction of winning novels is " + str(sum(novel_features['Winner'] / float(len(novel_features['Winner']))))
+```
+
+    The fraction of winning novels is 0.6278850683
+
+
+
+```python
+y = novel_features['Winner'].values
+del novel_features['Winner']
+del novel_features['Novel Date']
+```
+
+### Logistic Regression
+
+
+```python
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.cross_validation import cross_val_score
+```
+
+
+```python
+scaler = StandardScaler()
+features_norm = scaler.fit_transform(novel_features)
+
+trainX, testX, trainy, testy = train_test_split(features_norm, y, test_size=0.2, random_state=1)
+```
+
+
+```python
+model_lr = LogisticRegression(C=1)
+cross_val_score(model_lr,trainX,trainy,cv=10).mean()
+```
+
+
+
+
+    0.62544114084957148
+
+
+
+
+```python
+model_lr = LogisticRegression(C=5).fit(trainX,trainy)
+model_lr.score(testX, testy)
+```
+
+
+
+
+    0.63058823529411767
+
+
+
+
+```python
+print confusion_matrix(testy,model_lr.predict(testX))
+```
+
+    [[  2 157]
+     [  0 266]]
+
+
+The Logistic Regression didn't do too well.  Let's try applying PCA before running the Logistic Regression again.
+
+
+```python
+from sklearn.decomposition import PCA
+```
+
+
+```python
+pca = PCA()
+pca_features = pca.fit(features_norm).transform(features_norm)
+```
+
+
+```python
+pca_trainX, pca_testX, pca_trainy, pca_testy = train_test_split(pca_features, y, test_size=0.2, random_state=1)
+```
+
+
+```python
+new_model_lr = LogisticRegression(C=1)
+
+print cross_val_score(new_model_lr, pca_trainX, pca_trainy, cv=10).mean()
+
+new_model_lr.fit(pca_trainX, pca_trainy)
+
+print confusion_matrix(pca_testy,new_model_lr.predict(pca_testX))
+print new_model_lr.score(pca_testX, pca_testy) 
+```
+
+    0.62544114085
+    [[  1 158]
+     [  0 266]]
+    0.628235294118
+
+
+Let's run other models to see if they do any better.
+
+### K Neighbors
+
+
+```python
+from sklearn.neighbors import KNeighborsClassifier
+```
+
+
+```python
+model_knn = KNeighborsClassifier(4)
+
+print cross_val_score(model_knn, pca_trainX, pca_trainy, cv=10).mean()
+
+model_knn.fit(pca_trainX, pca_trainy)
+print confusion_matrix(pca_testy,model_knn.predict(pca_testX))
+print model_knn.score(pca_testX, pca_testy)
+
+```
+
+    0.534716670432
+    [[ 81  78]
+     [141 125]]
+    0.484705882353
+
+
+Unurprisingly, K Neighbors performs worse than Logistic Regression.
+
+### Naive Bayes
+
+
+```python
+from sklearn.naive_bayes import GaussianNB
+```
+
+
+```python
+model_nb = GaussianNB()
+print cross_val_score(model_nb, pca_trainX, pca_trainy, cv=10).mean()
+
+model_nb.fit(pca_trainX, pca_trainy)
+print confusion_matrix(pca_testy,model_nb.predict(pca_testX))
+print model_nb.score(pca_testX, pca_testy)
+
+
+```
+
+    0.544747630185
+    [[ 37 122]
+     [ 67 199]]
+    0.555294117647
+
+
+Also surprising, Naive Bayes doesn't as well as Logistic Regression in this case.
+
+### Decision Tree
+
+
+```python
+from sklearn.tree import DecisionTreeClassifier
+```
+
+
+```python
+model_dt = DecisionTreeClassifier(max_depth=3, random_state=1)
+print cross_val_score(model_dt, pca_trainX, pca_trainy, cv=10).mean()
+
+model_dt.fit(pca_trainX, pca_trainy)
+print confusion_matrix(pca_testy,model_dt.predict(pca_testX))
+print model_dt.score(pca_testX, pca_testy)
+```
+
+    0.607790438505
+    [[  2 157]
+     [  2 264]]
+    0.625882352941
+
+
+This Decision Tree does pretty well compared to the others, but still not an optimal score.
+
+### Random Forest
+
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+```
+
+
+```python
+model_rf = RandomForestClassifier(max_depth=3, n_estimators=100)
+print cross_val_score(model_rf, pca_trainX, pca_trainy, cv=10).mean()
+
+model_rf.fit(pca_trainX, pca_trainy)
+print confusion_matrix(pca_testy,model_rf.predict(pca_testX))
+print model_rf.score(pca_testX, pca_testy)
+```
+
+    0.628385838712
+    [[  0 159]
+     [  0 266]]
+    0.625882352941
+
+
+### Support Vector Machine
+
+
+```python
+from sklearn.svm import SVC
+```
+
+
+```python
+model_svc = SVC(kernel="rbf",C=1)
+print cross_val_score(model_svc, pca_trainX, pca_trainy, cv=10).mean()
+
+model_svc.fit(pca_trainX, pca_trainy)
+print confusion_matrix(pca_testy,model_svc.predict(pca_testX))
+print model_svc.score(pca_testX, pca_testy)
+```
+
+    0.621302650407
+    [[  0 159]
+     [  0 266]]
+    0.625882352941
+
+
+So Decision Trees and Support Vector Machines don't perform much better than guessing either.   
+Maybe it just doesn't make sense to predict if a novel wins just based on it's synopses or excerpt.  Don't judge a book by it's cover I guess.  
+
 
 ## Genre Recommendation (link to ipnb here)
 
