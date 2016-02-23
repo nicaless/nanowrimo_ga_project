@@ -309,7 +309,7 @@ __Excerpt__ The novel excerpt
 
 Contains numeric data represeting each novel's genre, synopses, and excerpt.
 
-There are 2122 rows and __ columns.
+There are 2122 rows and 23 columns.
 
 The data may be found [here](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/novel_features.csv).
 
@@ -350,13 +350,7 @@ __fk score excerpt__ The Flesch-Kincaid score of the novel synopsis.
 After I had constructed the data set, I proceeded with exploring the data with Python and matplotlib visualizations.
 
 
-### Let's take a look at the Writer data
-
-
-```python
-writers = pd.read_csv("../clean data/user_summary_no2015.csv", index_col=0)
-writers.head()
-```
+### Exploring the Writer data
 
 <div>
 <table border="1" class="dataframe">
@@ -515,24 +509,7 @@ writers.head()
 
 __Wins and Losses for NaNoWriMo 2015__
 
-
-```python
-# ratio of wins to losses
-winners = len(writers[writers['CURRENT WINNER'] == 1])
-nonwinners = len(writers[writers['CURRENT WINNER'] == 0])
-print "There are " + str(winners) + " winners out of " + str(len(writers[writers['CURRENT WINNER']])) + " writers"
-print "There are " + str(nonwinners) + " nonwinners out of " + str(len(writers[writers['CURRENT WINNER']])) + " writers"
-print "Therefore there is a " + str( ( float(winners) / len(writers[writers['CURRENT WINNER']]) )) + "% chance of winning"
-print "The ratio of winners to nonwinners is " + str( float(winners) / nonwinners) 
-```
-
-    There are 219 winners out of 501 writers
-    There are 282 nonwinners out of 501 writers
-    Therefore there is a 0.437125748503% chance of winning
-    The ratio of winners to nonwinners is 0.776595744681
-
-
-At first glance, winning is almost a coin-toss at 44%.
+There are 219 winners and 282 nonwinners out of 501 writers.  A little over a 4:3 ratio of winners to nonwinners.  At first glance, winning is almost a coin-toss at 44%.  One has near to a 50/50 chance of guessing correctly whether or not a writer is a NaNoWriMo winner. 
 
 
 __Lifetime Word Count vs Member Length__
@@ -554,7 +531,6 @@ It almost looks like there are clusters.  If Expected Daily Average => Expected 
 __Number of Wins vs Number of times participated__
 
 
-
 ![Imgur](http://i.imgur.com/lBqjeFm.png)
 
 
@@ -569,6 +545,7 @@ __Expected Daily Average vs Expected Num Submissions__
 Many writers seem to cluster around an Expected Daily Average of 1500-2000.  1,666 is the minimum daily average to win a NaNoWriMo contest.  The higher an Expected Daily Average, the more likely a writer is to win the upcoming contest.  
 
 Also interesting is how the density of nonwinners decreases as Expected Num Submissions increases, so higher Expected Num Submissions may also be indicative of winning.   
+
 
 __Distribution Word Count Submissions in early weeks of a contest__
 
@@ -589,69 +566,24 @@ __Average First Week Submissions vs Expected Daily Average__
 
 Additionally, writers whose daily average in the first week is equal to or greater than the Expected Daily Average of their past novels are more likely to win.
 
-__Does Municipal Liaison or having a novel sponsored have effect on winning?__
-
-
-```python
-# Convert to binary
-writers['Primary Role'][writers['Primary Role'] == 'Municipal Liaison'] = 1
-writers['Primary Role'][writers['Primary Role'] != 1] = 0
-writers['Sponsorship URL'].fillna(0, inplace=True)
-writers['Sponsorship URL'][writers['Sponsorship URL'] != 0] = 1
-```
-
-
-```python
-winlose = writers.groupby("CURRENT WINNER")
-df = pd.DataFrame({'loss': winlose['Primary Role'].get_group(0), 'win': winlose['Primary Role'].get_group(1)})
-df.plot(kind='hist', stacked=True, title = "Distribution of winners and nonwinners for Municipal Liaisons")
-```
-
+__Does being Municipal Liaison or having a novel sponsored have effect on winning?__
 
 
 ![Imgur](http://i.imgur.com/b4jSjo2.png)
 
-
-
-```python
-winlose = writers.groupby("CURRENT WINNER")
-df = pd.DataFrame({'loss': winlose['Sponsorship URL'].get_group(0), 'win': winlose['Sponsorship URL'].get_group(1)})
-df.plot(kind='hist', stacked=True, title = "Distribution of winners and nonwinners for those with sponsorships")
-```
-
+DESCRIBE ABOVE GRAPH
 
 ![Imgur](http://i.imgur.com/zMGGwTa.png)
 
+DESCRIBE ABOVE GRAPH
 
-It definitely seems like one is more likely to win if they are a Municipal Liaison of if their novel is sponsored!
-
-
-```python
-sponsors = writers[writers['Sponsorship URL'] == 1]
-winners = len(sponsors[sponsors['CURRENT WINNER'] == 1])
-nonwinners = len(sponsors[sponsors['CURRENT WINNER'] == 0])
-print "The ratio of winners to nonwinners for those with Sponsors is " + str( float(winners) / nonwinners)
-```
-
-The ratio of winners to nonwinners for those with Sponsors is 2.0
+The ratio of winners to nonwinners for those with Sponsors is 2.  The ratio of winners to nonwinners for those who are Municipal Liaisons is almost 6.  It definitely seems like one is more likely to win if they are a Municipal Liaison of if their novel is sponsored!
 
 
-
-```python
-mls = writers[writers['Primary Role'] == 1]
-winners = len(mls[mls['CURRENT WINNER'] == 1])
-nonwinners = len(mls[mls['CURRENT WINNER'] == 0])
-print "The ratio of winners to nonwinners for those who are MLs is " + str( float(winners) / nonwinners)
-```
-
-The ratio of winners to nonwinners for those who are MLs is 5.85714285714
+### Exploring the Novel data
 
 
-### Now let's look at the novel data
-```python
-novels = pd.read_csv("../clean data/novel_data.csv", index_col=0)
-novels.head()
-```
+REPLACE WITH THE TABLE OF NOVEL FEATURES
 
 <div>
 <table border="1" class="dataframe">
@@ -737,57 +669,16 @@ novels.head()
 __Overall Wins and Losses__
 
 
-```python
-winners = len(novels[novels['Winner'] == 1])
-nonwinners = len(novels[novels['Winner'] == 0])
-print "The total number of novels written is " + str( winners + nonwinners)
-print str(winners) + " are winners"
-print str(nonwinners) + " are not winners"
-print "Therefore " + str( (float(winners) / (nonwinners + winners) ) * 100 ) + "% are winners"
-print "The ratio of winners to nonwinners is " + str( float(winners) / nonwinners)
+The total number of novels in this sample is 2123.  1333 winners and 790 nonwinners for a 63/37 split.  It's interesting that there are more winning novels than nonwinning novels while there are more winning writers for the most recent NaNoWriMo than there are nonwinning writers.  But this makes sense because writers who write more novels are more likely to have their novels reach the 50,000 word goal.
 
-```
+__Text Features__
 
-	The total number of novels written is 2123
-	1333 are winners
-	790 are not winners
-	Therefore 62.78850683% are winners
-	The ratio of winners to nonwinners is 1.68734177215
-
-
-It's interesting that there are more winning novels than nonwinning novels while there are more winning writers for the most recent NaNoWriMo than there are nonwinning writers.  But this makes sense because writers who write more novels are more likely to have their novels reach the 50,000 word goal.
-
-### Text Features
-
-
-```python
-novel_features = pd.read_csv("../clean data/novel_features.csv", index_col = 0)
-```
-
-
-```python
-print "The average number of words in a synopses is " + str(novel_features['num words'].mean())
-print "There are " + str(novel_features['num words'].value_counts()[0]) + " novels without a synopsis"
-winlose = novel_features[novel_features['num words'] >= 50]
-winlose = winlose.groupby("Winner")
-df = pd.DataFrame({'loss': winlose['num words'].get_group(0), 'win': winlose['num words'].get_group(1)})
-df.plot(kind='hist', stacked=True, bins=[50,100,150,200,250,300,350,400,450,500,550,600], title = "Distribution of Words in Synopses")
-```
-
-    The average number of words in a synopses is 52.5930287329
-    There are 729 novels without a synopsis
 
 ![Imgur](http://i.imgur.com/WVkKWlZ.png)
 
 
-The average length in words of a synopses is 50 words, or about a few good sentences.  This is likely skewed by the fact that more than a third of the novels don't even have a synopsis.  There are few novels with synopses longer than 100 words, but as synopses get longer, it seems more likely that they belong to a winning novel.
+The average length in words of a synopses is 50 words, or about a few good sentences.  This is likely skewed by the fact that 729 novels, more than a third, don't even have a synopsis.  There are few novels with synopses longer than 100 words, but as synopses get longer, it seems more likely that they belong to a winning novel.
 
-
-```python
-winlose = novel_features.groupby("Winner")
-df = pd.DataFrame({'loss': winlose['fk score'].get_group(0), 'win': winlose['fk score'].get_group(1)})
-df.plot(kind='hist', stacked=True, bins=[20,40,60,80,100,120], title = "Distribution of FK score")
-```
 
 ![Imgur](http://i.imgur.com/sLHnooy.png)
 
@@ -799,21 +690,10 @@ from scipy.stats import ttest_ind
 ttest_ind(winlose['fk score'].get_group(0), winlose['fk score'].get_group(1))
 ```
 
-
-
-
     Ttest_indResult(statistic=-1.4376558464994371, pvalue=0.1506792394358735)
 
 
-
-The Flesch-Kincaid reading scores look about normally distributed for this sample of novel synopses for both winners and non-winners, and since the pvalue from our t-test is greater than 10%, we cannot reject a null hypothesis that the winning and non-winning novels have equal averages of Flesch-Kincaid scores.  Flesch-Kincaid scores for a novel synopses are unlikely to be indicative of a winning novel.  
-
-
-```python
-df = novel_features[novel_features['fk score'] >= 0]
-df = df[df['num words'] >= 50]
-df.plot(kind='scatter', x='num sentences', y='fk score', c='Winner', colormap=cmap_bold, title = "FK Score vs Number of Sentences")
-```
+The Flesch-Kincaid reading scores look about normally distributed for this sample of novel synopses for both winners and nonwinners.  In a t-test comparing the two data sets, the resulting p-value is greater than 10%.  This means, we cannot reject a null hypothesis that the winning and non-winning novels have equal averages of Flesch-Kincaid scores.  Flesch-Kincaid scores for a novel synopses are unlikely to be indicative of a winning novel.  
 
 
 ![Imgur](http://i.imgur.com/HV69yCg.png)
@@ -828,190 +708,12 @@ Trying to plot reading score of synopses against length of synopses produces thi
 
 As the variable I want to predict is binary (1 if a writer is a winner, 0 if otherwise) I decided to use a logistic regression as my prediction model.  
 
-
-
 ```python
-# convert primary role and sponsorship url to binary vars 
-# 1 if they are a municipal liaison, 0 otherwise
-writers['Primary Role'][writers['Primary Role'] == 'Municipal Liaison'] = 1
-writers['Primary Role'][writers['Primary Role'] != 1] = 0
-# 1 if novel is sponsored, 0 otherwise
-writers['Sponsorship URL'].fillna(0, inplace=True)
-writers['Sponsorship URL'][writers['Sponsorship URL'] != 0] = 1
-```
-
-
-```python
-# let's keep ALL NUMERIC COLUMNS except the CURRENT WINNER column which we will use as a response variable
+# keep ALL NUMERIC COLUMNS except the CURRENT WINNER column which we will use as a response variable
 features = writers._get_numeric_data()
-```
 
-
-```python
 del features['CURRENT WINNER']
-features.head()
-```
 
-
-
-
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Member Length</th>
-      <th>LifetimeWordCount</th>
-      <th>Age</th>
-      <th>Expected Final Word Count</th>
-      <th>Expected Daily Average</th>
-      <th>Current Donor</th>
-      <th>Wins</th>
-      <th>Donations</th>
-      <th>Participated</th>
-      <th>Consecutive Donor</th>
-      <th>...</th>
-      <th>Expected Max Submission</th>
-      <th>Expected Max Day</th>
-      <th>Expected Std Submissions</th>
-      <th>Expected Consec Subs</th>
-      <th>FW Total</th>
-      <th>FW Sub</th>
-      <th>FH Total</th>
-      <th>FH Sub</th>
-      <th>SH Total</th>
-      <th>SH Sub</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2</td>
-      <td>50919</td>
-      <td>24</td>
-      <td>50919.000000</td>
-      <td>1697.300000</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>...</td>
-      <td>24935.0</td>
-      <td>28.000000</td>
-      <td>6235.712933</td>
-      <td>12.000000</td>
-      <td>6689</td>
-      <td>6</td>
-      <td>12486</td>
-      <td>9</td>
-      <td>11743</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>10</td>
-      <td>478090</td>
-      <td>NaN</td>
-      <td>47809.000000</td>
-      <td>1593.633333</td>
-      <td>1</td>
-      <td>8</td>
-      <td>8</td>
-      <td>10</td>
-      <td>8</td>
-      <td>...</td>
-      <td>3809.0</td>
-      <td>9.000000</td>
-      <td>1002.295167</td>
-      <td>6.800000</td>
-      <td>16722</td>
-      <td>7</td>
-      <td>24086</td>
-      <td>14</td>
-      <td>26517</td>
-      <td>14</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>1</td>
-      <td>0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>28632</td>
-      <td>1</td>
-      <td>29299</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>11</td>
-      <td>475500</td>
-      <td>NaN</td>
-      <td>43227.272727</td>
-      <td>1440.909091</td>
-      <td>1</td>
-      <td>7</td>
-      <td>7</td>
-      <td>11</td>
-      <td>4</td>
-      <td>...</td>
-      <td>2325.0</td>
-      <td>8.545455</td>
-      <td>570.626795</td>
-      <td>8.090909</td>
-      <td>25360</td>
-      <td>7</td>
-      <td>38034</td>
-      <td>12</td>
-      <td>40766</td>
-      <td>9</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>3</td>
-      <td>30428</td>
-      <td>NaN</td>
-      <td>15214.000000</td>
-      <td>507.133333</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>...</td>
-      <td>2054.5</td>
-      <td>4.500000</td>
-      <td>538.273315</td>
-      <td>21.000000</td>
-      <td>1800</td>
-      <td>5</td>
-      <td>5300</td>
-      <td>10</td>
-      <td>5700</td>
-      <td>9</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-
-```python
 # set the target variable
 y = writers['CURRENT WINNER'].values
 
@@ -1019,8 +721,6 @@ y = writers['CURRENT WINNER'].values
 features.fillna(0, inplace=True)
 features.describe()
 ```
-
-
 
 
 <div>
@@ -1248,6 +948,15 @@ features.describe()
 </table>
 </div>
 
+CUT THE CODE AND DESCRIBE THE PROCESS IN THE JUPYTER NOTEBOOK FIRST TALK ABOUT 
+
+__Cross-Validation Score__
+
+__Confusion Matrix and Classification Report__
+
+__ROC Curve__
+
+DO ROC CURVE
 
 
 
@@ -1313,73 +1022,35 @@ print model_lr.score(X_test,y_test)
 
 
 
-This Logistic Regression correctly identified all the non-winners in the test data, and only incorrectly identified winners in the test data 8% of the time.  From the ROC curve...
+This Logistic Regression correctly identified all the nonwinners in the test data, and only incorrectly identified winners in the test data 8% of the time.  From the ROC curve...
 
 
 I'd say it's a pretty good model!
 
+
 ### Visualize the results of the Logistic Regression with PCA
 
 
-```python
-from matplotlib.colors import ListedColormap
-%matplotlib inline
-```
-
-There are a lot of features in this data set, so let's use Principal Components Analysis to decompose the data into 2 dimensions so it's easy to visualize.
-
-
-```python
-from sklearn.decomposition import PCA
-pca = PCA(n_components=2)
-```
-Now let's apply Logistic Regression again on the decomposed data
-
-```python
-features_pca = pca.fit(features_norm).transform(features_norm)
-pca_X_train, pca_X_test, pca_y_train, pca_y_test = train_test_split(features_pca,y, test_size=0.2, random_state=0)
-preds = LogisticRegression(C=5).fit(pca_X_train, pca_y_train).predict(pca_X_test)
-```
-
-
-```python
-cmap_bold = ListedColormap(['#FF0000', '#00FF00'])
-df1 = pd.DataFrame(pca_X_train)
-df1['Result'] = pca_y_train
-df1.plot(kind='scatter', x=0, y=1, c='Result', colormap = cmap_bold)
-```
+There are a lot of features in this data set, so I used Principal Components Analysis to decompose the data into 2 dimensions so it's easy to visualize.
 
 
 ![Imgur](http://i.imgur.com/mogNyvc.png)
 
 
-Above are the first and second principal components of the train data set, colored by the winners and non-winners.
+Above are the first and second principal components of the train data set, colored by the winners and nonwinners.
 
 
-```python
-df2 = pd.DataFrame(pca_X_test)
-df2['Predictions'] = preds
-df2.plot(kind='scatter', x=0, y=1, c='Predictions', colormap = cmap_bold)
-```
 
 ![Imgur](http://i.imgur.com/R1PBSCl.png)
 
-Here's how the Logistic Regression splits the decomposed test data.  Let's compare it with the actual results of the test data.
+Here's how the Logistic Regression splits the decomposed test data.  Comparing it with the actual results of the test data below, Tte Logistic Regression did pretty well generalizing the data and sorting out the winners and nonwinners of NaNoWriMo.
 
-
-```python
-df2 = pd.DataFrame(pca_X_test)
-df2['Actual'] = pca_y_test
-df2.plot(kind='scatter', x=0, y=1, c='Actual', colormap = cmap_bold)
-```
 
 ![Imgur](http://i.imgur.com/32VIWul.png)
 
+  
 
-
-The Logistic Regression did pretty well generalizing the data and sorting out the winners and non-winners of NaNoWriMo.  
-
-Now let's try using a Decision Tree to classify winners and non-winners.
+Pleased with the results of the Now let's try using a Decision Tree to classify winners and nonwinners.
 
 
 ```python
@@ -1410,7 +1081,7 @@ print model_dt.score(X_test, y_test)
     0.950495049505
 
 
-The decision tree also performs pretty well in predicting winners and non-winners. Let's see what features it found to be most predictive.
+The decision tree also performs pretty well in predicting winners and nonwinners. Let's see what features it found to be most predictive.
 
 
 ```python
@@ -1811,7 +1482,7 @@ print model_rf.score(X_test, y_test)
     0.752475247525
 
 
-It looks like Random Forests and Support Vector Machines do best in predicting winners and non-winners when excluding data from the current contest.
+It looks like Random Forests and Support Vector Machines do best in predicting winners and nonwinners when excluding data from the current contest.
 
 ## [Modeling Novel Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/NovelsModeling-Final.ipynb)
 Now that I've created a model to predict which writers will be winners based on their past NaNoWriMo performances, let's attempt to predict which novels will be winning novels based on what little we know about them: their genre, synopsis, and excerpt.
