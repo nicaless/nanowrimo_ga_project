@@ -57,7 +57,9 @@ My goal is to create a machine learning model that can predict whether a partici
 
 I love writing and I am enjoy participating in NaNoWriMo.  This idea stems from another personal project: creating my own [Word Count Tracker](http://nicaless.github.io/2015/11/09/My%20First%20Shiny%20App.html), similar to that on the NaNoWriMo website.  
 
-INSERT PICS HERE
+![Imgur](http://i.imgur.com/XXub2OU.png)
+![Imgur](http://i.imgur.com/yp0l5VC.png)
+
 
 Visualizing writing progress can motivate one to write more and reach his or her writing goals!  I hope creating this predictive model may help other writers and future NaNoWriMo participants improve their writing strategies continue to write and finish their novels. 
 
@@ -309,23 +311,44 @@ Contains numeric data represeting each novel's genre, synopses, and excerpt.
 
 There are 2122 rows and __ columns.
 
+The data may be found [here](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/novel_features.csv).
+
 #### Novel Numeric Features - Data Dictionary
-ADD THE DATA DICTIONARY AND NOTE THAT SOME COLUMNS ARE DUPLICATES IN THE OTHER FILE SO YOU'RE NOT GOING TO RELIST THEM
+Note: There are some columns that are duplicates from the [novel_data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/clean%20data/novel_data.csv) file, so they will not be redefined here.
+
+__has genre__ 0 if the novel has no given genre. 1 if otherwise.
+
+__standard genre__ 1 if the novel's given genre is one of the following "usual" genres: __ . 0 if otherwise.  
+
+__has_synopses__ 0 if the novel has no synopsis.  1 if otherwise.
+
+__num words__ The number of words in a novel's synopsis.
+
+__num uniques__ The number of unique words in a novel's synopsis.
+
+__num sentences__ The number of sentences in a novel's synopsis.  
+
+__paragraphs__ The number of sentences in a novel's synopsis.
+
+__fk score__ The Flesch-Kincaid score of the novel synopsis.
+
+__has excerpt__ 0 if the novel has no excerpt.  1 if otherwise.
+
+__num words excerpt__ The number of words in a novel's excerpt.
+
+__num uniques excerpt__ The number of unique words in a novel's excerpt.
+
+__num sentences excerpt__ The number of sentences in a novel's excerpt.  
+
+__paragraphs__ The number of sentences in a novel's excerpt.
+
+__fk score excerpt__ The Flesch-Kincaid score of the novel synopsis.
+
 
 
 ## [Exploring the Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/exploratoryanalysis.ipynb)
-After I had constructed the data, I proceeded with some preliminary explorations with Python and matplotlib.
+After I had constructed the data set, I proceeded with exploring the data with Python and matplotlib visualizations.
 
-
-```python
-import pandas as pd
-import numpy as np
-import warnings
-from matplotlib.colors import ListedColormap
-
-warnings.filterwarnings('ignore')
-%matplotlib inline
-```
 
 ### Let's take a look at the Writer data
 
@@ -334,9 +357,6 @@ warnings.filterwarnings('ignore')
 writers = pd.read_csv("../clean data/user_summary_no2015.csv", index_col=0)
 writers.head()
 ```
-
-
-
 
 <div>
 <table border="1" class="dataframe">
@@ -512,16 +532,10 @@ print "The ratio of winners to nonwinners is " + str( float(winners) / nonwinner
     The ratio of winners to nonwinners is 0.776595744681
 
 
-At first glance, winning is almost a coin-toss.  One can have an almost 50/50 chance at guessing whether a writer will win NaNoWriMo 2015.
+At first glance, winning is almost a coin-toss at 44%.
 
 
 __Lifetime Word Count vs Member Length__
-
-
-```python
-cmap_bold = ListedColormap(['#FF0000', '#00FF00'])
-writers.plot(kind='scatter', x='Member Length', y='LifetimeWordCount', c='CURRENT WINNER', colormap = cmap_bold, title = "LifetimeWordCount vs Member Length")
-```
 
 
 ![Imgur](http://i.imgur.com/OM5Wpyc.png)
@@ -532,12 +546,6 @@ Few writers have a written more than 1,000,000 words (or 20 NaNoWriMo winning no
 __Expected Avg Submission vs Expected Daily Average__
 
 
-```python
-df = writers[writers['Expected Avg Submission'] <= 15000]
-df.plot(kind='scatter', x='Expected Daily Average', y='Expected Avg Submission', c='CURRENT WINNER', colormap=cmap_bold, title = "Expected Avg Submission vs Expected Daily Average")
-```
-
-
 ![Imgur](http://i.imgur.com/VbtG1FX.png)
 
 
@@ -546,51 +554,28 @@ It almost looks like there are clusters.  If Expected Daily Average => Expected 
 __Number of Wins vs Number of times participated__
 
 
-```python
-df = writers[writers['Wins'] <= 30]
-df.plot(kind='scatter', x='Participated', y='Wins', c='CURRENT WINNER', colormap=cmap_bold, title = "Num Wins vs Num Participated")
-
-```
-
 
 ![Imgur](http://i.imgur.com/lBqjeFm.png)
 
 
-It looks like there may be possible clusters here as well.  Writers who have already had more than 5 wins are very likely to win again.  Also writers who have participated more than 5-10 times have better chances of winning as well.
+It looks like there may be possible clusters here as well.  Writers who have already had more than 5 wins are very likely to win again.  Also, writers who have participated more than 5-10 times have better chances of winning as well.
 
 __Expected Daily Average vs Expected Num Submissions__
-
-
-```python
-df = writers[writers['Expected Daily Average'] <= 10000]
-df.plot(kind='scatter', x='Expected Num Submissions', y='Expected Daily Average', c='CURRENT WINNER', colormap=cmap_bold, title = "Expected Daily Average vs Expected Num Submissions")
-
-```
 
 
 ![Imgur](http://i.imgur.com/BHBCI0G.png)
 
 
-Many writers seem to cluster around an Expected Daily Average of 1500-2000.  Remember, 1,666 is the minimum daily average to win a NaNoWriMo contest.  Of course, the higher an Expected Daily Average, the more likely a writer is to win the upcoming contest.  Also interesting is how the density of nonwinners decreases as Expected Num Submissions increases, so higher Expected Num Submissions may also be indicative of winning.   
+Many writers seem to cluster around an Expected Daily Average of 1500-2000.  1,666 is the minimum daily average to win a NaNoWriMo contest.  The higher an Expected Daily Average, the more likely a writer is to win the upcoming contest.  
+
+Also interesting is how the density of nonwinners decreases as Expected Num Submissions increases, so higher Expected Num Submissions may also be indicative of winning.   
 
 __Distribution Word Count Submissions in early weeks of a contest__
 
 I wanted to look retrospectively at the latest NaNoWriMo contest and see how winners can be predicted as early as the first week or two weeks of a contest
 
 
-```python
-winlose = writers.groupby("CURRENT WINNER")
-df = pd.DataFrame({'loss': winlose['FW Sub'].get_group(0), 'win': winlose['FW Sub'].get_group(1)})
-df.plot(kind='hist', stacked=True, title = "distribution of number ofsubmissions in first week of contest")
-```
-
 ![Imgur](http://i.imgur.com/TQkf7Mb.png)
-
-```python
-winlose = writers.groupby("CURRENT WINNER")
-df = pd.DataFrame({'loss': winlose['FH Sub'].get_group(0), 'win': winlose['FH Sub'].get_group(1)})
-df.plot(kind='hist', stacked=True, title = "distribution of number of submissions in first half of contest")
-```
 
 ![Imgur](http://i.imgur.com/LRBKpWn.png)
 
@@ -598,17 +583,11 @@ As expected, writers who submit more often in the early weeks are more likely to
 
 __Average First Week Submissions vs Expected Daily Average__
 
-```python
-df = writers
-df['FW Avg'] = df['FW Total'] / 7
-df.plot(kind='scatter', x='FW Avg', y='Expected Daily Average', c='CURRENT WINNER', colormap=cmap_bold, title = "Average First Week Submission vs Expected Num Submissions")
-
-```
 
 ![Imgur](http://i.imgur.com/mWKMKoy.png)
 
 
-Additionally, writers whose daily average in the first week => than the Expected Daily Average of their past novels are more likely to win.
+Additionally, writers whose daily average in the first week is equal to or greater than the Expected Daily Average of their past novels are more likely to win.
 
 __Does Municipal Liaison or having a novel sponsored have effect on winning?__
 
@@ -769,11 +748,11 @@ print "The ratio of winners to nonwinners is " + str( float(winners) / nonwinner
 
 ```
 
-The total number of novels written is 2123
-1333 are winners
-790 are not winners
-Therefore 62.78850683% are winners
-The ratio of winners to nonwinners is 1.68734177215
+	The total number of novels written is 2123
+	1333 are winners
+	790 are not winners
+	Therefore 62.78850683% are winners
+	The ratio of winners to nonwinners is 1.68734177215
 
 
 It's interesting that there are more winning novels than nonwinning novels while there are more winning writers for the most recent NaNoWriMo than there are nonwinning writers.  But this makes sense because writers who write more novels are more likely to have their novels reach the 50,000 word goal.
@@ -852,17 +831,18 @@ As the variable I want to predict is binary (1 if a writer is a winner, 0 if oth
 
 
 ```python
-# convert primary role and sponsorship url to binary vars
+# convert primary role and sponsorship url to binary vars 
+# 1 if they are a municipal liaison, 0 otherwise
 writers['Primary Role'][writers['Primary Role'] == 'Municipal Liaison'] = 1
 writers['Primary Role'][writers['Primary Role'] != 1] = 0
-
+# 1 if novel is sponsored, 0 otherwise
 writers['Sponsorship URL'].fillna(0, inplace=True)
 writers['Sponsorship URL'][writers['Sponsorship URL'] != 0] = 1
 ```
 
 
 ```python
-# let's keep ALL NUMERIAL COLUMNS except the CURRENT WINNER column which we will use as a response variable
+# let's keep ALL NUMERIC COLUMNS except the CURRENT WINNER column which we will use as a response variable
 features = writers._get_numeric_data()
 ```
 
@@ -1026,18 +1006,15 @@ features.head()
     </tr>
   </tbody>
 </table>
-<p>5 rows × 27 columns</p>
 </div>
 
 
 
 
 ```python
+# set the target variable
 y = writers['CURRENT WINNER'].values
-```
 
-
-```python
 # inputting 0 for users without prior data for daily avg, avg submission, num submissions etc. and so are marked NaN
 features.fillna(0, inplace=True)
 features.describe()
@@ -1269,7 +1246,6 @@ features.describe()
     </tr>
   </tbody>
 </table>
-<p>8 rows × 27 columns</p>
 </div>
 
 
@@ -1312,7 +1288,7 @@ cross_val_score(model_lr,X_train, y_train,cv=10).mean()
 
 
 
-Wow! That's a very good cross validation score! Now let's check out the model's confusion matrix and classification report and how well it does predicting the targets of the test data.
+That's a pretty good cross validation score! Now let's check out the model's confusion matrix, classification report, and ROC curve and how well it does predicting the targets of the test data.
 
 
 
@@ -1336,7 +1312,11 @@ print model_lr.score(X_test,y_test)
     0.960396039604
 
 
-This Logistic Regression correctly identified all the non-winners in the test data, and only incorrectly identified winners in the test data 8% of the time.  I'd say it's a pretty good model!
+
+This Logistic Regression correctly identified all the non-winners in the test data, and only incorrectly identified winners in the test data 8% of the time.  From the ROC curve...
+
+
+I'd say it's a pretty good model!
 
 ### Visualize the results of the Logistic Regression with PCA
 
@@ -2445,3 +2425,6 @@ Of course, this recommender only works for writers already in my list of writers
 ## Conclusion
 
 ### Next Steps
+expand the genre recommender
+try rebalancing the novel data
+
