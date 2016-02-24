@@ -693,7 +693,7 @@ ttest_ind(winlose['fk score'].get_group(0), winlose['fk score'].get_group(1))
     Ttest_indResult(statistic=-1.4376558464994371, pvalue=0.1506792394358735)
 
 
-The Flesch-Kincaid reading scores look about normally distributed for this sample of novel synopses for both winners and nonwinners.  In a t-test comparing the two data sets, the resulting p-value is greater than 10%.  This means, we cannot reject a null hypothesis that the winning and non-winning novels have equal averages of Flesch-Kincaid scores.  Flesch-Kincaid scores for a novel synopses are unlikely to be indicative of a winning novel.  
+The Flesch-Kincaid reading scores look about normally distributed for this sample of novel synopses for both winners and nonwinners.  In a t-test comparing the two data sets, the resulting p-value is greater than 10%.  This means, I cannot reject a null hypothesis that the winning and non-winning novels have equal averages of Flesch-Kincaid scores.  Flesch-Kincaid scores for a novel synopses are unlikely to be indicative of a winning novel.  
 
 
 ![Imgur](http://i.imgur.com/HV69yCg.png)
@@ -709,7 +709,7 @@ Trying to plot reading score of synopses against length of synopses produces thi
 As the variable I want to predict is binary (1 if a writer is a winner, 0 if otherwise) I decided to use a logistic regression as my prediction model.  
 
 ```python
-# keep ALL NUMERIC COLUMNS except the CURRENT WINNER column which we will use as a response variable
+# keep ALL NUMERIC COLUMNS except the CURRENT WINNER column which I will use as a response variable
 features = writers._get_numeric_data()
 
 del features['CURRENT WINNER']
@@ -952,62 +952,19 @@ CUT THE CODE AND DESCRIBE THE PROCESS IN THE JUPYTER NOTEBOOK FIRST TALK ABOUT
 
 __Cross-Validation Score__
 
-__Confusion Matrix and Classification Report__
-
-__ROC Curve__
-
-DO ROC CURVE
-
-
-
-```python
-from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import StandardScaler
-from sklearn.cross_validation import cross_val_score
-from sklearn.cross_validation import train_test_split
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
-```
-
-### Normalize data
-
-
-```python
-scaler = StandardScaler()
-features_norm = scaler.fit_transform(features)
-```
-
-### Apply Logistic Regression
-
-
-```python
-X_train, X_test, y_train, y_test = train_test_split(features_norm,y, test_size=0.2, random_state=0)
-```
-
-
 ```python
 model_lr = LogisticRegression(C=5)
 cross_val_score(model_lr,X_train, y_train,cv=10).mean()
 ```
 
 
-
-
     0.97749374609130713
 
 
-
-That's a pretty good cross validation score! Now let's check out the model's confusion matrix, classification report, and ROC curve and how well it does predicting the targets of the test data.
-
+That's a pretty good cross validation score! Now let's check out the model's confusion matrix, classification report, how well it does predicting the targets of the test data.
 
 
-
-```python
-model_lr.fit(X_train,y_train)
-print confusion_matrix(y_test,model_lr.predict(X_test))
-print classification_report(y_test,model_lr.predict(X_test))
-print model_lr.score(X_test,y_test)
-```
+__Confusion Matrix and Classification Report__
 
     [[51  4]
      [ 0 46]]
@@ -1020,12 +977,15 @@ print model_lr.score(X_test,y_test)
     
     0.960396039604
 
+This Logistic Regression correctly identified all the nonwinners in the test data, and only incorrectly identified winners in the test data 8% of the time.
 
+__ROC Curve__
 
-This Logistic Regression correctly identified all the nonwinners in the test data, and only incorrectly identified winners in the test data 8% of the time.  From the ROC curve...
+DO ROC CURVE
 
 
 I'd say it's a pretty good model!
+
 
 
 ### Visualize the results of the Logistic Regression with PCA
@@ -1050,7 +1010,7 @@ Here's how the Logistic Regression splits the decomposed test data.  Comparing i
 
   
 
-Pleased with the results of the Now let's try using a Decision Tree to classify winners and nonwinners.
+Pleased with the results of the Logistic Regression model, I then trained a Decision Tree on the features to compare.  
 
 
 ```python
@@ -1081,15 +1041,9 @@ print model_dt.score(X_test, y_test)
     0.950495049505
 
 
-The decision tree also performs pretty well in predicting winners and nonwinners. Let's see what features it found to be most predictive.
+A Decision Tree with a maximum depth of 5 also performs pretty well in predicting winners and nonwinners.  ELABORATE/COMPARE WITH LOGISTIC REGRESSION.
 
-
-```python
-dt_importances = pd.DataFrame(zip(features.columns, model_dt.feature_importances_))
-dt_importances.sort_values(1, ascending=False).head() # most to least predictive  
-```
-
-
+The Decision tree found the following features to be the most important.  
 
 
 <div>
@@ -1133,282 +1087,56 @@ dt_importances.sort_values(1, ascending=False).head() # most to least predictive
 
 
 
-SH Total, and FH Total are the most predictive features, but these are metrics collected after the current contest has started.  Let's build a model with just information we have from past contests and see how that works.  
+SH Total, and FH Total are the most predictive features of winning, but these are metrics collected after the current contest has started.  For next steps, I want to build a model with just the information I have from past contests.  
 
 
 ## [Using Fewer Feaures and Applying Other Models](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/Modeling%20with%20Fewer%20Features.ipynb)
 
-First, I want to exclude information from the contest that has already started by deleting the following features.
+First, I want to exclude information from the contest that has already started by deleting the features...
 
-
-```python
-# delete features that would only be collected after a contest starts
-del features['Current Donor']
-del features['FW Total']
-del features['FW Sub']
-del features['FH Total']
-del features['FH Sub']
-del features['SH Total']
-del features['SH Sub']
-
-
-features.head()
-```
-
-
-
-
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Member Length</th>
-      <th>LifetimeWordCount</th>
-      <th>Age</th>
-      <th>Expected Final Word Count</th>
-      <th>Expected Daily Average</th>
-      <th>Wins</th>
-      <th>Donations</th>
-      <th>Participated</th>
-      <th>Consecutive Donor</th>
-      <th>Consecutive Wins</th>
-      <th>Consecutive Part</th>
-      <th>Num Novels</th>
-      <th>Expected Num Submissions</th>
-      <th>Expected Avg Submission</th>
-      <th>Expected Min Submission</th>
-      <th>Expected Min Day</th>
-      <th>Expected Max Submission</th>
-      <th>Expected Max Day</th>
-      <th>Expected Std Submissions</th>
-      <th>Expected Consec Subs</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2</td>
-      <td>50919</td>
-      <td>24</td>
-      <td>50919.000000</td>
-      <td>1697.300000</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>14.000000</td>
-      <td>3637.071429</td>
-      <td>299.0</td>
-      <td>2.000000</td>
-      <td>24935.0</td>
-      <td>28.000000</td>
-      <td>6235.712933</td>
-      <td>12.000000</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>10</td>
-      <td>478090</td>
-      <td>NaN</td>
-      <td>47809.000000</td>
-      <td>1593.633333</td>
-      <td>8</td>
-      <td>8</td>
-      <td>10</td>
-      <td>8</td>
-      <td>7</td>
-      <td>10</td>
-      <td>10</td>
-      <td>8.300000</td>
-      <td>918.057453</td>
-      <td>42.7</td>
-      <td>7.700000</td>
-      <td>3809.0</td>
-      <td>9.000000</td>
-      <td>1002.295167</td>
-      <td>6.800000</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>1</td>
-      <td>0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>11</td>
-      <td>475500</td>
-      <td>NaN</td>
-      <td>43227.272727</td>
-      <td>1440.909091</td>
-      <td>7</td>
-      <td>7</td>
-      <td>11</td>
-      <td>4</td>
-      <td>4</td>
-      <td>11</td>
-      <td>11</td>
-      <td>9.272727</td>
-      <td>822.780595</td>
-      <td>36.0</td>
-      <td>6.727273</td>
-      <td>2325.0</td>
-      <td>8.545455</td>
-      <td>570.626795</td>
-      <td>8.090909</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>3</td>
-      <td>30428</td>
-      <td>NaN</td>
-      <td>15214.000000</td>
-      <td>507.133333</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>2</td>
-      <td>22.000000</td>
-      <td>678.318083</td>
-      <td>50.0</td>
-      <td>10.500000</td>
-      <td>2054.5</td>
-      <td>4.500000</td>
-      <td>538.273315</td>
-      <td>21.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-
-```python
-y = writers['CURRENT WINNER'].values
-features.fillna(0, inplace=True)
-
-# Normalize Data again
-scaler = StandardScaler()
-features_norm = scaler.fit_transform(features)
-```
 
 ### Re-apply Logistic Regression
 
-
-```python
-X_train, X_test, y_train, y_test = train_test_split(features_norm,y, test_size=0.2, random_state=0)
-```
-
-
-```python
-model_lr = LogisticRegression(C=5)
-print cross_val_score(model_lr,X_train, y_train,cv=10).mean()
-
-model_lr = LogisticRegression(C=5).fit(X_train, y_train)
-print model_lr.score(X_test,y_test)
-```
+RESTATE THE PROCESS OF APPLYING THE LOGISTIC REGRESSION.  INCLUDE THE CONFUSION MATRIX, CLASSIFICATION REPORT, AND ROC CURVE
 
     0.682823639775
     0.70297029703
 
 
-This is not as accurate as the first model which included the current contest data.  We can assume then that activity in the first couple weeks of the contest is predictive of winning.  
-
-Still, let's try some other models with these features and see how they do.
+This is not as accurate as the first model which included the current contest data.  I can assume then that activity in the first couple weeks of the contest is predictive of winning.  
 
 
 ### Naive Bayes
 
+TALK ABOUT CLASSIFICATION REPORT AND CONFUSION MATRIX 
 
-```python
-from sklearn.naive_bayes import GaussianNB
-
-model_nb = GaussianNB()
-print cross_val_score(model_nb, X_train, y_train, cv=10).mean()
-
-model_nb.fit(X_train, y_train
-print model_nb.score(X_test, y_test)
-```
 
     0.670064102564
     0.673267326733
 
 
-Naive Bayes is not as accurate as Logistic Regression in this case.
+Naive Bayes is not as accurate as Logistic Regression in this case.  ELABORATE probably because of it's naive assumptions
 
 ### SVM
 
+TALK ABOUT CLASSIFICATION REPORT AND CONFUSION MATRIX 
 
-```python
-from sklearn.svm import SVC
-
-model_svc = SVC(kernel="rbf",C=1)
-print cross_val_score(model_svc, X_train, y_train, cv=10).mean()
-
-model_svc.fit(X_train, y_train)
-print model_svc.score(X_test, y_test)
-```
 
     0.705644152595
     0.722772277228
 
 
-This Support Vector Machine does a little bit better than the Logistic Regression.
+This Support Vector Machine does a little bit better than the Logistic Regression. ELABORATE
 
 ### Decision Tree
 
 
-```python
-from sklearn.tree import DecisionTreeClassifier
-```
-
-
-```python
-model_dt = DecisionTreeClassifier(max_depth=5)
-print cross_val_score(model_dt, X_train, y_train, cv=10).mean()
-
-model_dt.fit(X_train, y_train)
-print model_dt.score(X_test, y_test)
-```
 
     0.647179487179
     0.663366336634
 
 
-The Decision Tree did not do as well this time without the other features.
-
-
-```python
-dt_importances = pd.DataFrame(zip(features.columns, model_dt.feature_importances_))
-dt_importances.sort_values(1, ascending=False).head() # most to least predictive of being 0
-```
-
-
+The Decision Tree did not do as well this time without the other features.  
 
 
 <div>
@@ -1453,23 +1181,10 @@ dt_importances.sort_values(1, ascending=False).head() # most to least predictive
 
 
 Without the data from the current contest, the most important features are Expected Daily Average and LifetimeWordCount, or a writer's average daily writing productivity and how much they've participated in the past.
+ 
 
 ### Random Forests
-
-
-```python
-from sklearn.ensemble import RandomForestClassifier
-```
-
-
-```python
-model_rf = RandomForestClassifier(max_depth=4, n_estimators=100, max_features=2)
-print cross_val_score(model_rf, X_train, y_train, cv=10).mean()
-
-model_rf.fit(X_train, y_train)
-print classification_report(y_test,model_rf.predict(X_test))
-print model_rf.score(X_test, y_test)
-```
+I trained the data on a Random Forest using the same... The Random Forest yielded...
 
     0.692890869293
                  precision    recall  f1-score   support
@@ -1482,30 +1197,12 @@ print model_rf.score(X_test, y_test)
     0.752475247525
 
 
-It looks like Random Forests and Support Vector Machines do best in predicting winners and nonwinners when excluding data from the current contest.
+Random Forests and Support Vector Machines do best in predicting winners and nonwinners when excluding data from the current contest........
+
 
 ## [Modeling Novel Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/NovelsModeling-Final.ipynb)
-Now that I've created a model to predict which writers will be winners based on their past NaNoWriMo performances, let's attempt to predict which novels will be winning novels based on what little we know about them: their genre, synopsis, and excerpt.
+Now that I've created a model to predict which writers will be winners based on their past NaNoWriMo performances, I want to attempt to predict which novels will be winning novels based on what little I know about them: their genre, synopsis, and excerpt.
 
-
-```python
-novel_features = pd.read_csv("../clean data/novel_features.csv", index_col = 0)
-
-# let's just keep the features extracted from the text data 
-del novel_features['Novel Name']
-del novel_features['Genre']
-del novel_features['Final Word Count']
-del novel_features['Daily Average']
-del novel_features['Synopses']
-del novel_features['url']
-del novel_features['Excerpt']
-del novel_features['Writer Name']
-```
-
-
-```python
-novel_features.head()
-```
 
 <div>
 <table border="1" class="dataframe">
@@ -1631,234 +1328,23 @@ novel_features.head()
 </div>
 
 
+Using only the above text data, DESCRIBE MODELING PROCESS (include pca).  REHIGHLIGHT TROUBLE WITH THE IMBALANCED DATA SET
 
 
-```python
-print "The fraction of winning novels is " + str(sum(novel_features['Winner'] / float(len(novel_features['Winner']))))
-```
+__Cross-Validation Score__
 
-    The fraction of winning novels is 0.6278850683
 
+__Confusion Matrix and Classification Report__
 
 
-```python
-y = novel_features['Winner'].values
-del novel_features['Winner']
-del novel_features['Novel Date']
-```
+__Scoring the Test Date__
 
-### Logistic Regression
 
-```python
-from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import StandardScaler
-from sklearn.cross_validation import cross_val_score
-```
+__ROC Curve__
 
 
-```python
-scaler = StandardScaler()
-features_norm = scaler.fit_transform(novel_features)
 
-trainX, testX, trainy, testy = train_test_split(features_norm, y, test_size=0.2, random_state=1)
-```
-
-
-```python
-model_lr = LogisticRegression(C=1)
-cross_val_score(model_lr,trainX,trainy,cv=10).mean()
-```
-
-
-
-
-    0.62544114084957148
-
-
-
-
-```python
-model_lr = LogisticRegression(C=5).fit(trainX,trainy)
-model_lr.score(testX, testy)
-```
-
-
-
-
-    0.63058823529411767
-
-
-
-
-```python
-print confusion_matrix(testy,model_lr.predict(testX))
-```
-
-    [[  2 157]
-     [  0 266]]
-
-
-The Logistic Regression didn't do too well.  Let's try applying PCA before running the Logistic Regression again.
-
-
-```python
-from sklearn.decomposition import PCA
-```
-
-
-```python
-pca = PCA()
-pca_features = pca.fit(features_norm).transform(features_norm)
-```
-
-
-```python
-pca_trainX, pca_testX, pca_trainy, pca_testy = train_test_split(pca_features, y, test_size=0.2, random_state=1)
-```
-
-
-```python
-new_model_lr = LogisticRegression(C=1)
-
-print cross_val_score(new_model_lr, pca_trainX, pca_trainy, cv=10).mean()
-
-new_model_lr.fit(pca_trainX, pca_trainy)
-
-print confusion_matrix(pca_testy,new_model_lr.predict(pca_testX))
-print new_model_lr.score(pca_testX, pca_testy) 
-```
-
-    0.62544114085
-    [[  1 158]
-     [  0 266]]
-    0.628235294118
-
-
-Let's run other models to see if they do any better.
-
-### K Neighbors
-
-
-```python
-from sklearn.neighbors import KNeighborsClassifier
-```
-
-
-```python
-model_knn = KNeighborsClassifier(4)
-
-print cross_val_score(model_knn, pca_trainX, pca_trainy, cv=10).mean()
-
-model_knn.fit(pca_trainX, pca_trainy)
-print confusion_matrix(pca_testy,model_knn.predict(pca_testX))
-print model_knn.score(pca_testX, pca_testy)
-
-```
-
-    0.534716670432
-    [[ 81  78]
-     [141 125]]
-    0.484705882353
-
-
-Unurprisingly, K Neighbors performs worse than Logistic Regression.
-
-### Naive Bayes
-
-
-```python
-from sklearn.naive_bayes import GaussianNB
-```
-
-
-```python
-model_nb = GaussianNB()
-print cross_val_score(model_nb, pca_trainX, pca_trainy, cv=10).mean()
-
-model_nb.fit(pca_trainX, pca_trainy)
-print confusion_matrix(pca_testy,model_nb.predict(pca_testX))
-print model_nb.score(pca_testX, pca_testy)
-
-
-```
-
-    0.544747630185
-    [[ 37 122]
-     [ 67 199]]
-    0.555294117647
-
-
-Also surprising, Naive Bayes doesn't do as well as Logistic Regression in this case either.
-
-### Decision Tree
-
-
-```python
-from sklearn.tree import DecisionTreeClassifier
-```
-
-
-```python
-model_dt = DecisionTreeClassifier(max_depth=3, random_state=1)
-print cross_val_score(model_dt, pca_trainX, pca_trainy, cv=10).mean()
-
-model_dt.fit(pca_trainX, pca_trainy)
-print confusion_matrix(pca_testy,model_dt.predict(pca_testX))
-print model_dt.score(pca_testX, pca_testy)
-```
-
-    0.607790438505
-    [[  2 157]
-     [  2 264]]
-    0.625882352941
-
-
-This Decision Tree does pretty well compared to the others, but still not an optimal score.
-
-### Random Forest
-
-
-```python
-from sklearn.ensemble import RandomForestClassifier
-```
-
-
-```python
-model_rf = RandomForestClassifier(max_depth=3, n_estimators=100)
-print cross_val_score(model_rf, pca_trainX, pca_trainy, cv=10).mean()
-
-model_rf.fit(pca_trainX, pca_trainy)
-print confusion_matrix(pca_testy,model_rf.predict(pca_testX))
-print model_rf.score(pca_testX, pca_testy)
-```
-
-    0.628385838712
-    [[  0 159]
-     [  0 266]]
-    0.625882352941
-
-
-### Support Vector Machine
-
-
-```python
-from sklearn.svm import SVC
-```
-
-
-```python
-model_svc = SVC(kernel="rbf",C=1)
-print cross_val_score(model_svc, pca_trainX, pca_trainy, cv=10).mean()
-
-model_svc.fit(pca_trainX, pca_trainy)
-print confusion_matrix(pca_testy,model_svc.predict(pca_testX))
-print model_svc.score(pca_testX, pca_testy)
-```
-
-    0.621302650407
-    [[  0 159]
-     [  0 266]]
-    0.625882352941
+The Logistic Regression didn't do too well this time.  SUMMARIZE RESULTS FROM THE OTHER MODELS AND WHAT MIGHT BE MOST IMPORTANT FEATURES... 
 
 
 So Decision Trees and Support Vector Machines don't perform much better than guessing either.   
@@ -1866,95 +1352,25 @@ Maybe it just doesn't make sense to predict if a novel wins just based on it's s
 
 
 ## [Clusters of Writers](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/K%20Means.ipynb)
-### K Means
 
-I've tried classifying writers by whether or not they've "won" or not in the next NaNoWriMo contest, but that sort of dampens the spirit of NaNoWriMo.  It's not just about winning.  So let's see what other ways to create clusters of writers with K Means.
-
-Let's again decompose the normalized data of the novel features into 2 dimensions.
+I've tried classifying writers by whether or not they've "won" or not in the next NaNoWriMo contest, but that sort of dampens the spirit of NaNoWriMo.  It's not just about winning after all.  I want to see what other ways to create clusters of writers with K Means.
 
 
-```python
-from sklearn.decomposition import PCA
-pca = PCA(n_components=2)
-features_pca = pd.DataFrame(pca.fit(features_norm).transform(features_norm))
-```
+TALK ABOUT FITTING DATA TO KMEANS AND CALCULATING SILHOUETTE SCORES 
 
-### Silhouette Scores
-
-
-```python
-from sklearn.metrics import silhouette_score
-```
-
-
-```python
-s_scores = []
-k_vals = range(2,16)
-
-for k in k_vals:
-    my_km = KMeans(k)
-    my_km.fit(features_pca)
-    my_labels = my_km.labels_
-    s_scores.append(silhouette_score(features_pca,my_labels,metric='euclidean'))
-
-print s_scores
-    
-p = figure(title="Silhouette Scores",tools='')
-
-p.circle(x = k_vals,y=s_scores,size = 5,color="blue")
-
-show(p)
-```
 ![Imgur](http://i.imgur.com/0fvoYHr.png)
 
-    [0.41932077425122599, 0.4727137451506, 0.49287953061698836, 0.4980019573744231, 0.42666976794677264, 0.42008475284354235, 0.42656607187123624, 0.42535577695419302, 0.41245648813796965, 0.41256441390978932, 0.43160675821878769, 0.38354959431985353, 0.43519319091547226, 0.39079375648586934]
+
+It looks a k of 5 produces the best silhouette score, so the data can best be fitted into 
 
 
-It looks 5 clusters produces the best silhouette score, so there are 5 real clusters in the data.
-
-
-```python
-PCA1 = features_pca[0]
-PCA2 = features_pca[1]
-
-my_km = KMeans(5)
-my_km.fit(features_pca)
-my_labels = my_km.labels_
-
-centers = my_km.cluster_centers_
-
-p = figure(title="Clusters NaNoWriMo writers",tools='')
-
-#plot actual writers
-p.circle(x = PCA1,y=PCA2,size = 5,color=colors)
-
-#plot centroids
-p.circle(x= centers[:,0],y=centers[:,1],
-        alpha=0.4,
-        color='green',
-        size=70)
-
-show(p)
-```
 ![Imgur](http://i.imgur.com/57jLKlo.png)
 
 
 ## [Genre Recommendation](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/Recommending%20New%20Genres.ipynb)
 While I could not create a very accurate model for predicting whether or not a novel will win based on its synopses or excerpt, I still wanted to do something interesting with all the novel data I had.  So I decided to create a simple recommendation system that, given a writer's NaNoWriMo username, would suggest new genres for the writer to try writing for based on their past.  
 
-
-
-```python
-import pandas as pd
-import warnings
-warnings.filterwarnings("ignore")
-writer_genres = pd.read_csv("../clean data/writer_genres.csv", index_col=0)
-writer_genres.head()
-```
-
-
-
-
+Here's a list of...
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -2009,55 +1425,18 @@ def jaccard(a, b):
     union = a.union(b)
     return float(len(intersect)) / len(union)
 
-nicaless_genres = writer_genres['Genres'][writer_genres['Writer Name'] == "Nicaless"].values[0]
-abookishbabe_genres = writer_genres['Genres'][writer_genres['Writer Name'] == "abookishbabe"].values[0]
-jaccard(nicaless_genres, abookishbabe_genres)
+
 ```
-
-
-
+	nicaless_genres = writer_genres['Genres'][writer_genres['Writer Name'] == "Nicaless"].values[0]
+	abookishbabe_genres = writer_genres['Genres'][writer_genres['Writer Name'] == "abookishbabe"].values[0]
+	
+	jaccard(nicaless_genres, abookishbabe_genres)
 
     0.5
 
+EXPLAIN THE ABOVE SCORE
 
-
-Here defines a function that uses the jaccard function to calculate the distance between a given writer's list of genres and all other writers' genres and returns a set of suggested genres based on the top ten closes writers.
-
-
-```python
-def getSimilar(writer):
-    my_genres = writer_genres['Genres'][writer_genres['Writer Name'] == writer].values[0]
-    
-    writers = []
-    genres = []
-    score = []
-    for i in range(0, len(writer_genres)):
-        writer_name = writer_genres['Writer Name'][i]
-        other_genres = writer_genres['Genres'][i]
-        writers.append(writer_name)
-        genres.append(other_genres)
-        score.append(jaccard(my_genres, other_genres))
-    df = pd.DataFrame(writers)
-    df['genres'] = genres
-    df['score'] = score
-    df = df[df['score'] != 1.0]
-    df = df.sort(['score'], ascending=0)
-    
-    suggested_genres = df['genres'][0:10]
-    
-    new_genres = []
-    for i in suggested_genres:
-        i = i.split(", ")
-        for j in i:
-            new_genres.append(j)
-    new_genres = (set(new_genres)).difference(set(my_genres.split(", ")))
-    # if there are no new genres to suggest, suggest the top genres
-    if len(new_genres) == 0:
-        new_genres = set(["Fantasy", "Young Adult", "Science Fiction"])
-    print "I suggest you try writing for the following genres:"
-    return new_genres
-
-```
+I then created a function called _getSimilar_ that uses the jaccard function to calculate the distance between a given writer's list of genres and all other writers' genres and returns a set of suggested genres based on the top ten closes writers.
 
 
 ```python
@@ -2097,5 +1476,4 @@ Of course, this recommender only works for writers already in my list of writers
 
 ### Next Steps
 expand the genre recommender
-try rebalancing the novel data
-
+try more advanced rebalancing the novel data and then trying to fit the data
