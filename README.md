@@ -981,7 +981,7 @@ This Logistic Regression correctly identified all the nonwinners in the test dat
 
 __ROC Curve__
 
-DO ROC CURVE
+![Imgur](http://i.imgur.com/aMmOX0a.png)
 
 
 I'd say it's a pretty good model!
@@ -1101,11 +1101,13 @@ RESTATE THE PROCESS OF APPLYING THE LOGISTIC REGRESSION.  INCLUDE THE CONFUSION 
 
     0.682823639775
     0.70297029703
+    
+![Imgur](http://i.imgur.com/43tqjbu.png)
 
 
 This is not as accurate as the first model which included the current contest data.  I can assume then that activity in the first couple weeks of the contest is predictive of winning.  
 
-
+### Other Models
 ### Naive Bayes
 
 TALK ABOUT CLASSIFICATION REPORT AND CONFUSION MATRIX 
@@ -1356,7 +1358,7 @@ Maybe it just doesn't make sense to predict if a novel wins just based on it's s
 I've tried classifying writers by whether or not they've "won" or not in the next NaNoWriMo contest, but that sort of dampens the spirit of NaNoWriMo.  It's not just about winning after all.  I want to see what other ways to create clusters of writers with K Means.
 
 
-TALK ABOUT FITTING DATA TO KMEANS AND CALCULATING SILHOUETTE SCORES 
+TALK ABOUT PROCESS OF FITTING DATA TO KMEANS AND CALCULATING SILHOUETTE SCORES 
 
 ![Imgur](http://i.imgur.com/0fvoYHr.png)
 
@@ -1410,7 +1412,7 @@ Here's a list of...
 </table>
 </div>
 
-
+explicit
 
 Below defines a function that calculates the jaccard distance from two different lists of genres.
 
