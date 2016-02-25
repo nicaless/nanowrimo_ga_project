@@ -55,10 +55,15 @@ My goal is to create a machine learning model that can predict whether a partici
 
 ## Motivation
 
-I love writing and I am enjoy participating in NaNoWriMo.  This idea stems from another personal project: creating my own [Word Count Tracker](http://nicaless.github.io/2015/11/09/My%20First%20Shiny%20App.html) that would ... track similar to... but take it a step further and visualize... 
+I love writing and I am enjoy participating in NaNoWriMo.  This idea stems from another personal project: creating my own [Word Count Tracker](http://nicaless.github.io/2015/11/09/My%20First%20Shiny%20App.html) that would track how much I write over time, similar to that of the cumulative word count graph displayed on each writer's novel profile every NaNoWrimo.  
+
+PICTURE
+
+I wanted to take it a step further and also visualize the aggregate word count progress of a region and the whole site.
 
 ![Imgur](http://i.imgur.com/XXub2OU.png)
 ![Imgur](http://i.imgur.com/yp0l5VC.png)
+PICTURE
 
 
 Visualizing writing progress can motivate one to write more and reach his or her writing goals!  I hope creating this predictive model may help other writers and future NaNoWriMo participants improve their writing strategies continue to write and finish their novels. 
@@ -571,96 +576,137 @@ __Does being Municipal Liaison or having a novel sponsored have effect on winnin
 
 ![Imgur](http://i.imgur.com/b4jSjo2.png)
 
-DESCRIBE ABOVE GRAPH
+Municipal Liaisons, which I've flagged with a binary variable (1 if they are a ML, 0 if otherwise), are a small fraction of the total NaNoWriMo writer population, but the majority of these MLs turn out to be winners at the end of the month.   
 
 ![Imgur](http://i.imgur.com/zMGGwTa.png)
 
-DESCRIBE ABOVE GRAPH
+Likewise, very few writers have sponsors for their novel.  
 
 The ratio of winners to nonwinners for those with Sponsors is 2.  The ratio of winners to nonwinners for those who are Municipal Liaisons is almost 6.  It definitely seems like one is more likely to win if they are a Municipal Liaison of if their novel is sponsored!
 
 
 ### Exploring the Novel data
 
-
-REPLACE WITH THE TABLE OF NOVEL FEATURES
+list of each novel
 
 <div>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Writer Name</th>
-      <th>Novel Name</th>
-      <th>Genre</th>
-      <th>Final Word Count</th>
-      <th>Daily Average</th>
       <th>Winner</th>
-      <th>Synopses</th>
-      <th>url</th>
       <th>Novel Date</th>
+      <th>has genre</th>
+      <th>standard genre</th>
+      <th>has_synopses</th>
+      <th>num words</th>
+      <th>num uniques</th>
+      <th>num sentences</th>
+      <th>paragraphs</th>
+      <th>fk score</th>
+      <th>has excerpt</th>
+      <th>num words excerpt</th>
+      <th>num uniques excerpt</th>
+      <th>num sentences excerpt</th>
+      <th>paragraphs excerpt</th>
+      <th>fk score excerpt</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>Nicaless</td>
-      <td>Novel: Lauren's Birthday</td>
-      <td>Genre: Young Adult</td>
-      <td>24229</td>
-      <td>807</td>
       <td>0</td>
-      <td>\n&lt;p&gt;&lt;/p&gt;\n</td>
-      <td>http://nanowrimo.org/participants/nicaless/nov...</td>
       <td>November 2015</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>Nicaless</td>
-      <td>Novel: A Mystery in the Kingdom of Aermon</td>
-      <td>Genre: Fantasy</td>
-      <td>50919</td>
-      <td>1,697</td>
       <td>1</td>
-      <td>\n&lt;p&gt;Hitoshi is appointed the youngest Judge a...</td>
-      <td>http://nanowrimo.org/participants/nicaless/nov...</td>
       <td>November 2014</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>44</td>
+      <td>42</td>
+      <td>3</td>
+      <td>1</td>
+      <td>65.73</td>
+      <td>1</td>
+      <td>132</td>
+      <td>96</td>
+      <td>13</td>
+      <td>7</td>
+      <td>78.25</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>Rachel B. Moore</td>
-      <td>Novel: Finding Fortunato</td>
-      <td>Genre: Literary</td>
-      <td>50603</td>
-      <td>1,686</td>
       <td>1</td>
-      <td>\n&lt;p&gt;Sam and Anna Gold and their newly adoptiv...</td>
-      <td>http://nanowrimo.org/participants/rachel-b-moo...</td>
       <td>November 2015</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>153</td>
+      <td>109</td>
+      <td>7</td>
+      <td>4</td>
+      <td>58.62</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>Rachel B. Moore</td>
-      <td>Novel: The Residency</td>
-      <td>Genre: Literary</td>
-      <td>50425</td>
-      <td>1,680</td>
       <td>1</td>
-      <td>\n&lt;p&gt;It's every writer's dream - an all-expens...</td>
-      <td>http://nanowrimo.org/participants/rachel-b-moo...</td>
       <td>November 2014</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>59</td>
+      <td>51</td>
+      <td>4</td>
+      <td>3</td>
+      <td>65.73</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>Rachel B. Moore</td>
-      <td>Novel: The Jew From Fortunato</td>
-      <td>Genre: Literary Fiction</td>
-      <td>41447</td>
-      <td>1,381</td>
       <td>0</td>
-      <td>\n&lt;p&gt;20-something Andre Levinsky is a fish out...</td>
-      <td>http://nanowrimo.org/participants/rachel-b-moo...</td>
       <td>November 2013</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>124</td>
+      <td>93</td>
+      <td>4</td>
+      <td>1</td>
+      <td>56.93</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.00</td>
     </tr>
   </tbody>
 </table>
@@ -707,246 +753,6 @@ Trying to plot reading score of synopses against length of synopses produces thi
 ## [Logistic Regression](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/Logistic%20Regression2.ipynb)
 
 As the variable I want to predict is binary (1 if a writer is a winner, 0 if otherwise) I decided to use a logistic regression as my prediction model.  
-
-```python
-# keep ALL NUMERIC COLUMNS except the CURRENT WINNER column which I will use as a response variable
-features = writers._get_numeric_data()
-
-del features['CURRENT WINNER']
-
-# set the target variable
-y = writers['CURRENT WINNER'].values
-
-# inputting 0 for users without prior data for daily avg, avg submission, num submissions etc. and so are marked NaN
-features.fillna(0, inplace=True)
-features.describe()
-```
-
-
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Member Length</th>
-      <th>LifetimeWordCount</th>
-      <th>Age</th>
-      <th>Expected Final Word Count</th>
-      <th>Expected Daily Average</th>
-      <th>Current Donor</th>
-      <th>Wins</th>
-      <th>Donations</th>
-      <th>Participated</th>
-      <th>Consecutive Donor</th>
-      <th>...</th>
-      <th>Expected Max Submission</th>
-      <th>Expected Max Day</th>
-      <th>Expected Std Submissions</th>
-      <th>Expected Consec Subs</th>
-      <th>FW Total</th>
-      <th>FW Sub</th>
-      <th>FH Total</th>
-      <th>FH Sub</th>
-      <th>SH Total</th>
-      <th>SH Sub</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>...</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-      <td>501.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>4.212575</td>
-      <td>172552.676647</td>
-      <td>8.596806</td>
-      <td>36428.312194</td>
-      <td>1214.277073</td>
-      <td>0.317365</td>
-      <td>2.606786</td>
-      <td>1.421158</td>
-      <td>3.656687</td>
-      <td>1.047904</td>
-      <td>...</td>
-      <td>4764.389341</td>
-      <td>10.005534</td>
-      <td>1314.411102</td>
-      <td>9.573348</td>
-      <td>12203.137725</td>
-      <td>4.413174</td>
-      <td>20962.403194</td>
-      <td>8.137725</td>
-      <td>17100.556886</td>
-      <td>6.520958</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>3.255209</td>
-      <td>329113.331830</td>
-      <td>14.463648</td>
-      <td>43782.218313</td>
-      <td>1459.407277</td>
-      <td>0.465916</td>
-      <td>4.651782</td>
-      <td>3.044384</td>
-      <td>4.899582</td>
-      <td>1.760029</td>
-      <td>...</td>
-      <td>5727.358954</td>
-      <td>8.406292</td>
-      <td>2011.241171</td>
-      <td>8.393503</td>
-      <td>39000.987493</td>
-      <td>2.614373</td>
-      <td>54462.877403</td>
-      <td>5.140330</td>
-      <td>21562.099582</td>
-      <td>6.259238</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>0.166667</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>...</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>1.000000</td>
-      <td>9818.000000</td>
-      <td>0.000000</td>
-      <td>7443.250000</td>
-      <td>248.108333</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>1.000000</td>
-      <td>0.000000</td>
-      <td>...</td>
-      <td>955.000000</td>
-      <td>1.000000</td>
-      <td>256.685927</td>
-      <td>0.000000</td>
-      <td>2258.000000</td>
-      <td>2.000000</td>
-      <td>3925.000000</td>
-      <td>3.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>4.000000</td>
-      <td>93385.000000</td>
-      <td>0.000000</td>
-      <td>37594.333333</td>
-      <td>1253.144444</td>
-      <td>0.000000</td>
-      <td>1.000000</td>
-      <td>0.000000</td>
-      <td>2.000000</td>
-      <td>0.000000</td>
-      <td>...</td>
-      <td>3546.500000</td>
-      <td>9.333333</td>
-      <td>873.018486</td>
-      <td>8.500000</td>
-      <td>7890.000000</td>
-      <td>5.000000</td>
-      <td>15212.000000</td>
-      <td>10.000000</td>
-      <td>10900.000000</td>
-      <td>5.000000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>6.000000</td>
-      <td>206482.000000</td>
-      <td>20.000000</td>
-      <td>50734.200000</td>
-      <td>1691.140000</td>
-      <td>1.000000</td>
-      <td>3.000000</td>
-      <td>2.000000</td>
-      <td>5.000000</td>
-      <td>1.000000</td>
-      <td>...</td>
-      <td>6250.000000</td>
-      <td>16.200000</td>
-      <td>1516.145753</td>
-      <td>16.000000</td>
-      <td>12361.000000</td>
-      <td>7.000000</td>
-      <td>23832.000000</td>
-      <td>13.000000</td>
-      <td>28005.000000</td>
-      <td>13.000000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>13.000000</td>
-      <td>4562712.000000</td>
-      <td>61.000000</td>
-      <td>651816.000000</td>
-      <td>21727.200000</td>
-      <td>1.000000</td>
-      <td>52.000000</td>
-      <td>36.000000</td>
-      <td>52.000000</td>
-      <td>9.000000</td>
-      <td>...</td>
-      <td>51238.000000</td>
-      <td>30.000000</td>
-      <td>23874.872328</td>
-      <td>30.000000</td>
-      <td>630036.000000</td>
-      <td>7.000000</td>
-      <td>1000000.000000</td>
-      <td>14.000000</td>
-      <td>210000.000000</td>
-      <td>16.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
 
 CUT THE CODE AND DESCRIBE THE PROCESS IN THE JUPYTER NOTEBOOK FIRST TALK ABOUT 
 
@@ -1010,7 +816,7 @@ Here's how the Logistic Regression splits the decomposed test data.  Comparing i
 
   
 
-Pleased with the results of the Logistic Regression model, I then trained a Decision Tree on the features to compare.  
+Pleased with the results of the Logistic Regression model, I then trained a Decision Tree with maximum depth of 5 on the features to compare.  
 
 
 ```python
@@ -1041,9 +847,9 @@ print model_dt.score(X_test, y_test)
     0.950495049505
 
 
-A Decision Tree with a maximum depth of 5 also performs pretty well in predicting winners and nonwinners.  ELABORATE/COMPARE WITH LOGISTIC REGRESSION.
+It also performed pretty well in predicting winners and nonwinners achieving a similar scores for cross validation and precision and recall.
 
-The Decision tree found the following features to be the most important.  
+Using feature importances The Decision tree found the following features to be the most important.  
 
 
 <div>
@@ -1477,5 +1283,6 @@ Of course, this recommender only works for writers already in my list of writers
 ## Conclusion
 
 ### Next Steps
+feature engineering of features not based on data from current contest
 expand the genre recommender
 try more advanced rebalancing the novel data and then trying to fit the data
