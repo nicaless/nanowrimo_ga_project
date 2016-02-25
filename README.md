@@ -55,7 +55,7 @@ My goal is to create a machine learning model that can predict whether a partici
 
 ## Motivation
 
-I love writing and I am enjoy participating in NaNoWriMo.  This idea stems from another personal project: creating my own [Word Count Tracker](http://nicaless.github.io/2015/11/09/My%20First%20Shiny%20App.html), similar to that on the NaNoWriMo website.  
+I love writing and I am enjoy participating in NaNoWriMo.  This idea stems from another personal project: creating my own [Word Count Tracker](http://nicaless.github.io/2015/11/09/My%20First%20Shiny%20App.html) that would ... track similar to... but take it a step further and visualize... 
 
 ![Imgur](http://i.imgur.com/XXub2OU.png)
 ![Imgur](http://i.imgur.com/yp0l5VC.png)
