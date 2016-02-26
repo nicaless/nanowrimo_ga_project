@@ -57,7 +57,7 @@ My goal is to create a machine learning model that can predict whether a partici
 
 I love writing and I am enjoy participating in NaNoWriMo.  This idea stems from another personal project: creating my own [Word Count Tracker](http://nicaless.github.io/2015/11/09/My%20First%20Shiny%20App.html) that would track how much I write over time, similar to that of the cumulative word count graph displayed on each writer's novel profile every NaNoWrimo.  
 
-PICTURE
+PICTURE?
 
 I wanted to take it a step further and also visualize the aggregate word count progress of a region and the whole site.
 
@@ -272,11 +272,11 @@ __FW Total__ - For the current NaNoWriMo, the total word count of a novel in the
 
 __FW Sub__ - For the current NaNoWriMo, the number of word count submissions to a novel in the first week of the contest
 
-__FH Total__ - For the current NaNoWriMo, the total word count of a novel in the first half of the contest
+__FH Total__ - For the current NaNoWriMo, the total word count of a novel written in the first half of the contest
 
 __FH Sub__ - For the current NaNoWriMo, the number of word count submissions to a novel in the first half of the contest
 
-__SH Total__ - For the current NaNoWriMo, the total word count of a novel in the second half of the contest
+__SH Total__ - For the current NaNoWriMo, the total word count of a novel written in the second half of the contest
 
 __SH Sub__ - For the current NaNoWriMo, the number of word count submissions to a novel in the second half of the contest    
 
@@ -587,7 +587,14 @@ The ratio of winners to nonwinners for those with Sponsors is 2.  The ratio of w
 
 ### Exploring the Novel data
 
-list of each novel
+GET CORRECT DATA FRAME
+
+__Overall Wins and Losses__
+
+
+The total number of novels in this sample is 2123.  1333 winners and 790 nonwinners for a 63/37 split.  It's interesting that there are more winning novels than nonwinning novels while there are more winning writers for the most recent NaNoWriMo than there are nonwinning writers.  But this makes sense because writers who write more novels are more likely to have their novels reach the 50,000 word goal.
+
+__Text Features__
 
 <div>
 <table border="1" class="dataframe">
@@ -712,13 +719,6 @@ list of each novel
 </table>
 </div>
 
-__Overall Wins and Losses__
-
-
-The total number of novels in this sample is 2123.  1333 winners and 790 nonwinners for a 63/37 split.  It's interesting that there are more winning novels than nonwinning novels while there are more winning writers for the most recent NaNoWriMo than there are nonwinning writers.  But this makes sense because writers who write more novels are more likely to have their novels reach the 50,000 word goal.
-
-__Text Features__
-
 
 ![Imgur](http://i.imgur.com/WVkKWlZ.png)
 
@@ -752,104 +752,82 @@ Trying to plot reading score of synopses against length of synopses produces thi
 
 ## [Logistic Regression](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/Logistic%20Regression2.ipynb)
 
+TRY AGAIN EXCLUDING SH 
+
 As the variable I want to predict is binary (1 if a writer is a winner, 0 if otherwise) I decided to use a logistic regression as my prediction model.  
 
-CUT THE CODE AND DESCRIBE THE PROCESS IN THE JUPYTER NOTEBOOK FIRST TALK ABOUT 
+After extracting only the numerical columns from the writer data, replacing any NaN entries - new writers who don't have data from past NaNoWriMos - with 0, I applied a Standard Scaler to normalize the data.  I then performed an 80/20 split on the data - 400 observations for training and 101 observations for testing.  
 
 __Cross-Validation Score__
 
-```python
-model_lr = LogisticRegression(C=5)
-cross_val_score(model_lr,X_train, y_train,cv=10).mean()
-```
-
-
-    0.97749374609130713
-
-
-That's a pretty good cross validation score! Now let's check out the model's confusion matrix, classification report, how well it does predicting the targets of the test data.
-
+I created 10 different folds of the training data to train, test, and cross-validate a Logistic Regression model.  The average cross-validation score was  __.977__.  This is a promising indication that this model does very well in predicting a winning or non-winning outcome for a writer.  
 
 __Confusion Matrix and Classification Report__
 
-    [[51  4]
-     [ 0 46]]
-                 precision    recall  f1-score   support
-    
-              0       1.00      0.93      0.96        55
-              1       0.92      1.00      0.96        46
-    
-    avg / total       0.96      0.96      0.96       101
-    
-    0.960396039604
+After cross-validating on just the training data, I re-trained the model on the entire training data set and then used the model to predict the outcomes for the writers in the test data set.  Comparing the model's predictions with the actual outcomes, I obtained the following confusion matrix and classification report.   
 
-This Logistic Regression correctly identified all the nonwinners in the test data, and only incorrectly identified winners in the test data 8% of the time.
+| | Actual 0 | Actual 1 
+---|---|---
+__Predicted 0__ | 51 | 4
+__Predicted 1__ | 0 | 46
+
+| | Precision | Recall | F1-Score | Support 
+---|---|---|---|----
+__0__ | 1.00 | 0.93 | 0.96 | 55
+__1__ | 0.92 | 1.00 | 0.96 | 46
+__avg/total__ | 0.96 | 0.96 | 0.96 | 101
+ 
+
+Only 4 winners were misclassified as non-winners.  The Logistic Regression correctly identified the winners and nonwinners in the test data with about __96%__ accuracy, as illustrated by its precision, recall, and F1-scores.  
 
 __ROC Curve__
 
+In plotting the the ROC curve for the model, I found the area under the curve was almost 1.  
+
 ![Imgur](http://i.imgur.com/aMmOX0a.png)
 
-
-I'd say it's a pretty good model!
+It seems like it's a pretty good model!
 
 
 
 ### Visualize the results of the Logistic Regression with PCA
 
 
-There are a lot of features in this data set, so I used Principal Components Analysis to decompose the data into 2 dimensions so it's easy to visualize.
+There are a lot of features in this data set, so I used Principal Components Analysis to decompose the data and easily to visualize where the winners and non-winners fall on a 2 dimensional plane.  
 
 
 ![Imgur](http://i.imgur.com/mogNyvc.png)
 
 
-Above are the first and second principal components of the train data set, colored by the winners and nonwinners.
-
+Above are the first and second principal components of the training data set, colored by the winners and nonwinners.
 
 
 ![Imgur](http://i.imgur.com/R1PBSCl.png)
 
-Here's how the Logistic Regression splits the decomposed test data.  Comparing it with the actual results of the test data below, Tte Logistic Regression did pretty well generalizing the data and sorting out the winners and nonwinners of NaNoWriMo.
+Here's how the Logistic Regression splits the decomposed test data.  Comparing it with the actual results of the test data below, the Logistic Regression did very well generalizing the data and sorting out the winners and nonwinners of NaNoWriMo.
 
 
 ![Imgur](http://i.imgur.com/32VIWul.png)
 
-  
 
-Pleased with the results of the Logistic Regression model, I then trained a Decision Tree with maximum depth of 5 on the features to compare.  
-
-
-```python
-from sklearn.tree import DecisionTreeClassifier
-```
+Pleased with the results of the Logistic Regression model, I then similarly trained a Decision Tree on the features to compare the two methods.  
 
 
-```python
-model_dt = DecisionTreeClassifier(max_depth=5)
-print cross_val_score(model_dt, X_train, y_train, cv=10).mean()
+It also performed very well in predicting winners and nonwinners achieving a similar scores for cross validation and precision and recall.
 
-model_dt.fit(X_train, y_train)
-print confusion_matrix(y_test, model_dt.predict(X_test))
-print classification_report(y_test,model_dt.predict(X_test))
-print model_dt.score(X_test, y_test)
-```
+| | Actual 0 | Actual 1 
+---|---|---
+__Predicted 0__ | 50 | 5
+__Predicted 1__ | 0 | 46
 
-    0.969676360225
-    [[50  5]
-     [ 0 46]]
-                 precision    recall  f1-score   support
-    
-              0       1.00      0.91      0.95        55
-              1       0.90      1.00      0.95        46
-    
-    avg / total       0.96      0.95      0.95       101
-    
-    0.950495049505
+| | Precision | Recall | F1-Score | Support 
+---|---|---|---|----
+__0__ | 1.00 | 0.91 | 0.95 | 55
+__1__ | 0.90 | 1.00 | 0.95 | 46
+__avg/total__ | 0.95 | 0.95 | 0.96 | 101
 
 
-It also performed pretty well in predicting winners and nonwinners achieving a similar scores for cross validation and precision and recall.
-
-Using feature importances The Decision tree found the following features to be the most important.  
+The Decision tree found the following features to be the most important.  
 
 
 <div>
@@ -857,8 +835,8 @@ Using feature importances The Decision tree found the following features to be t
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>0</th>
-      <th>1</th>
+      <th>Feature Name</th>
+      <th>Feature Importances</th>
     </tr>
   </thead>
   <tbody>
@@ -893,27 +871,42 @@ Using feature importances The Decision tree found the following features to be t
 
 
 
-SH Total, and FH Total are the most predictive features of winning, but these are metrics collected after the current contest has started.  For next steps, I want to build a model with just the information I have from past contests.  
+SH Total and FH Total - the total word count of a writer's novel submitted in the second half and first half of the contest respectively - are the most predictive features of winning, but these are metrics collected after the current contest has started.  For next steps, I want to build a model with just the information I have from past contests.  
 
 
 ## [Using Fewer Feaures and Applying Other Models](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/Modeling%20with%20Fewer%20Features.ipynb)
 
-First, I want to exclude information from the contest that has already started by deleting the features...
+I excluded the features relevant to the current contest - the number of words and submissions accounted in the first week, first two weeks, or second two weeks.  I then re-applied the Logistic Regression model.
 
+| | Actual 0 | Actual 1 
+---|---|---
+__Predicted 0__ | 48 | 7
+__Predicted 1__ | 23 | 23
 
-### Re-apply Logistic Regression
+| | Precision | Recall | F1-Score | Support 
+---|---|---|---|----
+__0__ | 0.68 | 0.87 | 0.76 | 55
+__1__ | 0.77 | 0.50 | 0.61 | 46
+__avg/total__ | 0.72 | 0.70 | 0.69 | 101
 
-RESTATE THE PROCESS OF APPLYING THE LOGISTIC REGRESSION.  INCLUDE THE CONFUSION MATRIX, CLASSIFICATION REPORT, AND ROC CURVE
-
-    0.682823639775
-    0.70297029703
+                       Actual Class 0  Actual Class 1
+    Predicted Class 0              48               7
+    Predicted Class 1              22              24
+                 precision    recall  f1-score   support
+    
+              0       0.69      0.87      0.77        55
+              1       0.77      0.52      0.62        46
+    
+    avg / total       0.73      0.71      0.70       101
     
 ![Imgur](http://i.imgur.com/43tqjbu.png)
 
 
-This is not as accurate as the first model which included the current contest data.  I can assume then that activity in the first couple weeks of the contest is predictive of winning.  
+The difference between this model and the previous, which included the current contest data, is drastic.  Many non-winners are predicted to win... Why?  Perhaps these were past winners/active participants that just fell short this week.
 
-### Other Models
+I then compared the results against other models.
+
+
 ### Naive Bayes
 
 TALK ABOUT CLASSIFICATION REPORT AND CONFUSION MATRIX 
@@ -921,6 +914,16 @@ TALK ABOUT CLASSIFICATION REPORT AND CONFUSION MATRIX
 
     0.670064102564
     0.673267326733
+    
+                           Actual Class 0  Actual Class 1
+    Predicted Class 0              48               7
+    Predicted Class 1              26              20
+                 precision    recall  f1-score   support
+    
+              0       0.65      0.87      0.74        55
+              1       0.74      0.43      0.55        46
+    
+    avg / total       0.69      0.67      0.65       101
 
 
 Naive Bayes is not as accurate as Logistic Regression in this case.  ELABORATE probably because of it's naive assumptions
@@ -932,8 +935,19 @@ TALK ABOUT CLASSIFICATION REPORT AND CONFUSION MATRIX
 
     0.705644152595
     0.722772277228
+    
+                           Actual Class 0  Actual Class 1
+    Predicted Class 0              49               6
+    Predicted Class 1              20              26
+                 precision    recall  f1-score   support
+    
+              0       0.71      0.89      0.79        55
+              1       0.81      0.57      0.67        46
+    
+    avg / total       0.76      0.74      0.73       101
 
 
+                      
 This Support Vector Machine does a little bit better than the Logistic Regression. ELABORATE
 
 ### Decision Tree
@@ -942,6 +956,16 @@ This Support Vector Machine does a little bit better than the Logistic Regressio
 
     0.647179487179
     0.663366336634
+    
+                       Actual Class 0  Actual Class 1
+    Predicted Class 0              42              13
+    Predicted Class 1              22              24
+                 precision    recall  f1-score   support
+    
+              0       0.66      0.76      0.71        55
+              1       0.65      0.52      0.58        46
+    
+    avg / total       0.65      0.65      0.65       101
 
 
 The Decision Tree did not do as well this time without the other features.  
@@ -995,17 +1019,26 @@ Without the data from the current contest, the most important features are Expec
 I trained the data on a Random Forest using the same... The Random Forest yielded...
 
     0.692890869293
+                     
+    0.752475247525
+
+                       Actual Class 0  Actual Class 1
+    Predicted Class 0              48               7
+    Predicted Class 1              18              28
                  precision    recall  f1-score   support
     
-              0       0.72      0.89      0.80        55
-              1       0.82      0.59      0.68        46
+              0       0.73      0.87      0.79        55
+              1       0.80      0.61      0.69        46
     
-    avg / total       0.77      0.75      0.75       101
-    
-    0.752475247525
+    avg / total       0.76      0.75      0.75       101
 
 
 Random Forests and Support Vector Machines do best in predicting winners and nonwinners when excluding data from the current contest........
+
+While using past data to predict the outcome of a contest is 
+
+
+The activity in the first couple weeks of the contest is predictive of winning... can make or break writers who based on how well they performed in the past have good marks with potential to win 
 
 
 ## [Modeling Novel Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/NovelsModeling-Final.ipynb)
