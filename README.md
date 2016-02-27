@@ -1,51 +1,7 @@
 # Predicting NaNoWriMo Winners
 
 - [Table of Contents](#)
-	- [Objective](#)
-	- [Motivation](#)
-	- [The Data](#)
-		- [NaNoWriMo vocabulary](#)
-		- [Scraping NaNoWriMo Data](#)
-			- [Scraping Script Guide](#)
-			- [Raw Data Guide](#)
-		- [The Data Processing Process](#)
-			- [Extracting Numeric Data from Novel Text Data](#)
-			- [Aggregating Writer Data](#)
-			- [Processing Script Guide](#)
-		- [Data Dictionaries](#)
-			- [Writers - About the Data](#)
-			- [Writers - Data Dictionary](#)
-			- [Novels - About the Data](#)
-			- [Novels - Data Dictionary](#)
-			- [Novel Numeric Features - About the Data](#)
-			- [Novel Numeric Features - Data Dictionary](#)
-	- [Exploring the Data](#)
-		- [Let's take a look at the Writer data](#)
-		- [Now let's look at the novel data](#)
-		- [Text Features](#)
-	- [Logistic Regression](#)
-		- [Normalize data](#)
-		- [Apply Logistic Regression](#)
-		- [Visualize the results of the Logistic Regression with PCA](#)
-	- [Using Fewer Feaures and Applying Other Models](#)
-		- [Re-apply Logistic Regression](#)
-		- [Naive Bayes](#)
-		- [SVM](#)
-		- [Decision Tree](#)
-		- [Random Forests](#)
-	- [Modeling Novel Data](#)
-		- [Logistic Regression](#)
-		- [K Neighbors](#)
-		- [Naive Bayes](#)
-		- [Decision Tree](#)
-		- [Random Forest](#)
-		- [Support Vector Machine](#)
-	- [Clusters of Writers](#)
-		- [K Means](#)
-		- [Silhouette Scores](#)
-	- [Genre Recommendation](#)
-	- [Conclusion](#)
-		- [Next Steps](#)
+REDO
 
 
 ## Objective
@@ -760,7 +716,7 @@ After extracting only the numerical columns from the writer data, replacing any 
 
 __Cross-Validation Score__
 
-I created 10 different folds of the training data to train, test, and cross-validate a Logistic Regression model.  The average cross-validation score was  __.977__.  This is a promising indication that this model does very well in predicting a winning or non-winning outcome for a writer.  
+I created 10 different folds of the training data to train, test, and cross-validate a Logistic Regression model.  The average cross-validation score was  __.86__.  This is a promising indication that this model does very well in predicting a winning or non-winning outcome for a writer.  
 
 __Confusion Matrix and Classification Report__
 
@@ -776,15 +732,27 @@ __Predicted 1__ | 0 | 46
 __0__ | 1.00 | 0.93 | 0.96 | 55
 __1__ | 0.92 | 1.00 | 0.96 | 46
 __avg/total__ | 0.96 | 0.96 | 0.96 | 101
+
+                       Actual Class 0  Actual Class 1
+    Predicted Class 0              46               9
+    Predicted Class 1               8              38
+                 precision    recall  f1-score   support
+    
+              0       0.85      0.84      0.84        55
+              1       0.81      0.83      0.82        46
+    
+    avg / total       0.83      0.83      0.83       101
+
  
 
-Only 4 winners were misclassified as non-winners.  The Logistic Regression correctly identified the winners and nonwinners in the test data with about __96%__ accuracy, as illustrated by its precision, recall, and F1-scores.  
+Only 4 winners were misclassified as non-winners.  The Logistic Regression correctly identified the winners and nonwinners in the test data with about __83%__ accuracy, as illustrated by its precision, recall, and F1-scores.  
 
 __ROC Curve__
 
-In plotting the the ROC curve for the model, I found the area under the curve was almost 1.  
+In plotting the the ROC curve for the model, I found the area under the curve was about .9, pretty close to an ideal area of 1.  
 
 ![Imgur](http://i.imgur.com/aMmOX0a.png)
+UPDATE PICTURE
 
 It seems like it's a pretty good model!
 
@@ -797,12 +765,14 @@ There are a lot of features in this data set, so I used Principal Components Ana
 
 
 ![Imgur](http://i.imgur.com/mogNyvc.png)
+UPDATE PICTURE
 
 
 Above are the first and second principal components of the training data set, colored by the winners and nonwinners.
 
 
 ![Imgur](http://i.imgur.com/R1PBSCl.png)
+UPDATE PICTURE
 
 Here's how the Logistic Regression splits the decomposed test data.  Comparing it with the actual results of the test data below, the Logistic Regression did very well generalizing the data and sorting out the winners and nonwinners of NaNoWriMo.
 
@@ -826,6 +796,16 @@ __0__ | 1.00 | 0.91 | 0.95 | 55
 __1__ | 0.90 | 1.00 | 0.95 | 46
 __avg/total__ | 0.95 | 0.95 | 0.96 | 101
 
+    [[46  9]
+     [ 7 39]]
+                 precision    recall  f1-score   support
+    
+              0       0.87      0.84      0.85        55
+              1       0.81      0.85      0.83        46
+    
+    avg / total       0.84      0.84      0.84       101
+
+
 
 The Decision tree found the following features to be the most important.  
 
@@ -835,35 +815,35 @@ The Decision tree found the following features to be the most important.
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Feature Name</th>
-      <th>Feature Importances</th>
+      <th>0</th>
+      <th>1</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>25</th>
-      <td>SH Total</td>
-      <td>0.795322</td>
-    </tr>
-    <tr>
       <th>23</th>
       <td>FH Total</td>
-      <td>0.184662</td>
+      <td>0.712847</td>
     </tr>
     <tr>
-      <th>18</th>
-      <td>Expected Max Day</td>
-      <td>0.015199</td>
+      <th>1</th>
+      <td>LifetimeWordCount</td>
+      <td>0.057194</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>FH Sub</td>
+      <td>0.045414</td>
     </tr>
     <tr>
       <th>14</th>
       <td>Expected Avg Submission</td>
-      <td>0.004818</td>
+      <td>0.039117</td>
     </tr>
     <tr>
-      <th>0</th>
-      <td>Member Length</td>
-      <td>0.000000</td>
+      <th>11</th>
+      <td>Consecutive Part</td>
+      <td>0.036241</td>
     </tr>
   </tbody>
 </table>
@@ -871,7 +851,7 @@ The Decision tree found the following features to be the most important.
 
 
 
-SH Total and FH Total - the total word count of a writer's novel submitted in the second half and first half of the contest respectively - are the most predictive features of winning, but these are metrics collected after the current contest has started.  For next steps, I want to build a model with just the information I have from past contests.  
+FH Total - the total word count of a writer's novel submitted in the first half of the contest - is the most predictive feature of winning by a long shot, but this is a metric collected after the current contest has started.  For next steps, I want to build a model with just the information I have from past contests.  
 
 
 ## [Using Fewer Feaures and Applying Other Models](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/Modeling%20with%20Fewer%20Features.ipynb)
@@ -881,23 +861,13 @@ I excluded the features relevant to the current contest - the number of words an
 | | Actual 0 | Actual 1 
 ---|---|---
 __Predicted 0__ | 48 | 7
-__Predicted 1__ | 23 | 23
+__Predicted 1__ | 22 | 24
 
 | | Precision | Recall | F1-Score | Support 
 ---|---|---|---|----
-__0__ | 0.68 | 0.87 | 0.76 | 55
-__1__ | 0.77 | 0.50 | 0.61 | 46
-__avg/total__ | 0.72 | 0.70 | 0.69 | 101
-
-                       Actual Class 0  Actual Class 1
-    Predicted Class 0              48               7
-    Predicted Class 1              22              24
-                 precision    recall  f1-score   support
-    
-              0       0.69      0.87      0.77        55
-              1       0.77      0.52      0.62        46
-    
-    avg / total       0.73      0.71      0.70       101
+__0__ | 0.69 | 0.87 | 0.77 | 55
+__1__ | 0.77 | 0.52 | 0.62 | 46
+__avg/total__ | 0.73 | 0.71 | 0.70 | 101
     
 ![Imgur](http://i.imgur.com/43tqjbu.png)
 
@@ -968,7 +938,7 @@ This Support Vector Machine does a little bit better than the Logistic Regressio
     avg / total       0.65      0.65      0.65       101
 
 
-The Decision Tree did not do as well this time without the other features.  
+The Decision Tree did not do as well this time without data from the current contest. 
 
 
 <div>
@@ -1012,7 +982,7 @@ The Decision Tree did not do as well this time without the other features.
 
 
 
-Without the data from the current contest, the most important features are Expected Daily Average and LifetimeWordCount, or a writer's average daily writing productivity and how much they've participated in the past.
+This time, the most important features are Expected Daily Average and LifetimeWordCount, or a writer's average daily writing productivity and how much they've participated in the past.
  
 
 ### Random Forests
@@ -1174,6 +1144,20 @@ Using only the above text data, DESCRIBE MODELING PROCESS (include pca).  REHIGH
 
 __Cross-Validation Score__
 
+    0.62544114085
+                       Actual Class 0  Actual Class 1
+    Predicted Class 0               1             158
+    Predicted Class 1               0             266
+                 precision    recall  f1-score   support
+    
+              0       1.00      0.01      0.01       159
+              1       0.63      1.00      0.77       266
+    
+    avg / total       0.77      0.63      0.49       425
+    
+    0.630153121319
+
+
 
 __Confusion Matrix and Classification Report__
 
@@ -1185,10 +1169,8 @@ __ROC Curve__
 
 
 
-The Logistic Regression didn't do too well this time.  SUMMARIZE RESULTS FROM THE OTHER MODELS AND WHAT MIGHT BE MOST IMPORTANT FEATURES... 
-
-
-So Decision Trees and Support Vector Machines don't perform much better than guessing either.   
+The Logistic Regression didn't do too well this time.  SUMMARIZE RESULTS FROM THE OTHER MODELS 
+  
 Maybe it just doesn't make sense to predict if a novel wins just based on it's synopses or excerpt.  Don't judge a book by it's cover I guess.  
 
 
@@ -1316,6 +1298,6 @@ Of course, this recommender only works for writers already in my list of writers
 ## Conclusion
 
 ### Next Steps
-feature engineering of features not based on data from current contest
+more feature engineering of features not based on data from current contest to boost score
 expand the genre recommender
 try more advanced rebalancing the novel data and then trying to fit the data
