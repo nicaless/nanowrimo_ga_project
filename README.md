@@ -543,7 +543,93 @@ The ratio of winners to nonwinners for those with Sponsors is 2.  The ratio of w
 
 ### Exploring the Novel data
 
-GET CORRECT DATA FRAME
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Writer Name</th>
+      <th>Novel Name</th>
+      <th>Genre</th>
+      <th>Final Word Count</th>
+      <th>Daily Average</th>
+      <th>Winner</th>
+      <th>Synopses</th>
+      <th>url</th>
+      <th>Novel Date</th>
+      <th>Excerpt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Nicaless</td>
+      <td>Novel: Lauren's Birthday</td>
+      <td>Genre: Young Adult</td>
+      <td>24229</td>
+      <td>807</td>
+      <td>0</td>
+      <td>\n&lt;p&gt;&lt;/p&gt;\n</td>
+      <td>http://nanowrimo.org/participants/nicaless/nov...</td>
+      <td>November 2015</td>
+      <td>\n&lt;p&gt;&lt;/p&gt;\n</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Nicaless</td>
+      <td>Novel: A Mystery in the Kingdom of Aermon</td>
+      <td>Genre: Fantasy</td>
+      <td>50919</td>
+      <td>1,697</td>
+      <td>1</td>
+      <td>\n&lt;p&gt;Hitoshi is appointed the youngest Judge a...</td>
+      <td>http://nanowrimo.org/participants/nicaless/nov...</td>
+      <td>November 2014</td>
+      <td>\n&lt;p&gt;This story, funnily enough, started out a...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Rachel B. Moore</td>
+      <td>Novel: Finding Fortunato</td>
+      <td>Genre: Literary</td>
+      <td>50603</td>
+      <td>1,686</td>
+      <td>1</td>
+      <td>\n&lt;p&gt;Sam and Anna Gold and their newly adoptiv...</td>
+      <td>http://nanowrimo.org/participants/rachel-b-moo...</td>
+      <td>November 2015</td>
+      <td>\n&lt;p&gt;&lt;/p&gt;\n</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Rachel B. Moore</td>
+      <td>Novel: The Residency</td>
+      <td>Genre: Literary</td>
+      <td>50425</td>
+      <td>1,680</td>
+      <td>1</td>
+      <td>\n&lt;p&gt;It's every writer's dream - an all-expens...</td>
+      <td>http://nanowrimo.org/participants/rachel-b-moo...</td>
+      <td>November 2014</td>
+      <td>\n&lt;p&gt;&lt;/p&gt;\n</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Rachel B. Moore</td>
+      <td>Novel: The Jew From Fortunato</td>
+      <td>Genre: Literary Fiction</td>
+      <td>41447</td>
+      <td>1,381</td>
+      <td>0</td>
+      <td>\n&lt;p&gt;20-something Andre Levinsky is a fish out...</td>
+      <td>http://nanowrimo.org/participants/rachel-b-moo...</td>
+      <td>November 2013</td>
+      <td>\n&lt;p&gt;&lt;/p&gt;\n</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
 
 __Overall Wins and Losses__
 
@@ -708,7 +794,6 @@ Trying to plot reading score of synopses against length of synopses produces thi
 
 ## [Logistic Regression](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/Logistic%20Regression2.ipynb)
 
-TRY AGAIN EXCLUDING SH 
 
 As the variable I want to predict is binary (1 if a writer is a winner, 0 if otherwise) I decided to use a logistic regression as my prediction model.  
 
@@ -751,8 +836,7 @@ __ROC Curve__
 
 In plotting the the ROC curve for the model, I found the area under the curve was about .9, pretty close to an ideal area of 1.  
 
-![Imgur](http://i.imgur.com/aMmOX0a.png)
-UPDATE PICTURE
+![Imgur](http://i.imgur.com/77uSrMu.png)
 
 It seems like it's a pretty good model!
 
@@ -764,20 +848,18 @@ It seems like it's a pretty good model!
 There are a lot of features in this data set, so I used Principal Components Analysis to decompose the data and easily to visualize where the winners and non-winners fall on a 2 dimensional plane.  
 
 
-![Imgur](http://i.imgur.com/mogNyvc.png)
-UPDATE PICTURE
+![Imgur](http://i.imgur.com/hJ4EnVR.png)
 
 
 Above are the first and second principal components of the training data set, colored by the winners and nonwinners.
 
 
-![Imgur](http://i.imgur.com/R1PBSCl.png)
-UPDATE PICTURE
+![Imgur](http://i.imgur.com/4Eu3mWY.png)
 
-Here's how the Logistic Regression splits the decomposed test data.  Comparing it with the actual results of the test data below, the Logistic Regression did very well generalizing the data and sorting out the winners and nonwinners of NaNoWriMo.
+Above is how the Logistic Regression splits the decomposed test data.  Comparing it with the actual results of the test data below, the Logistic Regression did very well generalizing the data and sorting out the winners and nonwinners of NaNoWriMo.
 
 
-![Imgur](http://i.imgur.com/32VIWul.png)
+![Imgur](http://i.imgur.com/HqKOl8q.png)
 
 
 Pleased with the results of the Logistic Regression model, I then similarly trained a Decision Tree on the features to compare the two methods.  
@@ -787,24 +869,14 @@ It also performed very well in predicting winners and nonwinners achieving a sim
 
 | | Actual 0 | Actual 1 
 ---|---|---
-__Predicted 0__ | 50 | 5
-__Predicted 1__ | 0 | 46
+__Predicted 0__ | 46 | 9
+__Predicted 1__ | 7 | 39
 
 | | Precision | Recall | F1-Score | Support 
 ---|---|---|---|----
-__0__ | 1.00 | 0.91 | 0.95 | 55
-__1__ | 0.90 | 1.00 | 0.95 | 46
-__avg/total__ | 0.95 | 0.95 | 0.96 | 101
-
-    [[46  9]
-     [ 7 39]]
-                 precision    recall  f1-score   support
-    
-              0       0.87      0.84      0.85        55
-              1       0.81      0.85      0.83        46
-    
-    avg / total       0.84      0.84      0.84       101
-
+__0__ | .87 | 0.84 | 0.85 | 55
+__1__ | 0.81 | 0.85| 0.83 | 46
+__avg/total__ | 0.84 | 0.85 | 0.84 | 101
 
 
 The Decision tree found the following features to be the most important.  
@@ -872,70 +944,56 @@ __avg/total__ | 0.73 | 0.71 | 0.70 | 101
 ![Imgur](http://i.imgur.com/43tqjbu.png)
 
 
-The difference between this model and the previous, which included the current contest data, is drastic.  Many non-winners are predicted to win... Why?  Perhaps these were past winners/active participants that just fell short this week.
+The difference between this model and the previous, which included the current contest data, is about 10%.  
 
 I then compared the results against other models.
 
 
 ### Naive Bayes
 
-TALK ABOUT CLASSIFICATION REPORT AND CONFUSION MATRIX 
+| | Actual 0 | Actual 1 
+---|---|---
+__Predicted 0__ | 48 | 7
+__Predicted 1__ | 26 | 20
 
-
-    0.670064102564
-    0.673267326733
-    
-                           Actual Class 0  Actual Class 1
-    Predicted Class 0              48               7
-    Predicted Class 1              26              20
-                 precision    recall  f1-score   support
-    
-              0       0.65      0.87      0.74        55
-              1       0.74      0.43      0.55        46
-    
-    avg / total       0.69      0.67      0.65       101
+| | Precision | Recall | F1-Score | Support 
+---|---|---|---|----
+__0__ | 0.65 | 0.87 | 0.74 | 55
+__1__ | 0.74 | 0.43 | 0.55 | 46
+__avg/total__ | 0.69 | 0.67 | 0.65 | 101
 
 
 Naive Bayes is not as accurate as Logistic Regression in this case.  ELABORATE probably because of it's naive assumptions
 
 ### SVM
 
-TALK ABOUT CLASSIFICATION REPORT AND CONFUSION MATRIX 
+| | Actual 0 | Actual 1 
+---|---|---
+__Predicted 0__ | 49 | 6
+__Predicted 1__ | 20 | 26
 
-
-    0.705644152595
-    0.722772277228
-    
-                           Actual Class 0  Actual Class 1
-    Predicted Class 0              49               6
-    Predicted Class 1              20              26
-                 precision    recall  f1-score   support
-    
-              0       0.71      0.89      0.79        55
-              1       0.81      0.57      0.67        46
-    
-    avg / total       0.76      0.74      0.73       101
-
+| | Precision | Recall | F1-Score | Support 
+---|---|---|---|----
+__0__ | 0.71 | 0.89 | 0.79 | 55
+__1__ | 0.81 | 0.57 | 0.67 | 46
+__avg/total__ | 0.76 | 0.74 | 0.73 | 101
 
                       
 This Support Vector Machine does a little bit better than the Logistic Regression. ELABORATE
 
 ### Decision Tree
 
+| | Actual 0 | Actual 1 
+---|---|---
+__Predicted 0__ | 42 | 13
+__Predicted 1__ | 22 | 24
 
+| | Precision | Recall | F1-Score | Support 
+---|---|---|---|----
+__0__ | 0.66 | 0.76 | 0.71 | 55
+__1__ | 0.85 | 0.52 | 0.58 | 46
+__avg/total__ | 0.65 | 0.65 | 0.65 | 101
 
-    0.647179487179
-    0.663366336634
-    
-                       Actual Class 0  Actual Class 1
-    Predicted Class 0              42              13
-    Predicted Class 1              22              24
-                 precision    recall  f1-score   support
-    
-              0       0.66      0.76      0.71        55
-              1       0.65      0.52      0.58        46
-    
-    avg / total       0.65      0.65      0.65       101
 
 
 The Decision Tree did not do as well this time without data from the current contest. 
@@ -952,29 +1010,29 @@ The Decision Tree did not do as well this time without data from the current con
   </thead>
   <tbody>
     <tr>
-      <th>4</th>
-      <td>Expected Daily Average</td>
-      <td>0.359694</td>
+      <th>3</th>
+      <td>Expected Final Word Count</td>
+      <td>0.356964</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Expected Num Submissions</td>
+      <td>0.126865</td>
     </tr>
     <tr>
       <th>1</th>
       <td>LifetimeWordCount</td>
-      <td>0.173496</td>
+      <td>0.124095</td>
     </tr>
     <tr>
       <th>0</th>
       <td>Member Length</td>
-      <td>0.085099</td>
+      <td>0.070148</td>
     </tr>
     <tr>
-      <th>12</th>
-      <td>Expected Num Submissions</td>
-      <td>0.079384</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>Expected Min Submission</td>
-      <td>0.066356</td>
+      <th>2</th>
+      <td>Age</td>
+      <td>0.067985</td>
     </tr>
   </tbody>
 </table>
@@ -982,30 +1040,28 @@ The Decision Tree did not do as well this time without data from the current con
 
 
 
-This time, the most important features are Expected Daily Average and LifetimeWordCount, or a writer's average daily writing productivity and how much they've participated in the past.
- 
+This time, the most important feature is Expected Final Word Count, or a writer's.. 
 
 ### Random Forests
 I trained the data on a Random Forest using the same... The Random Forest yielded...
 
-    0.692890869293
-                     
-    0.752475247525
+| | Actual 0 | Actual 1 
+---|---|---
+__Predicted 0__ | 48 | 7
+__Predicted 1__ | 18 | 28
 
-                       Actual Class 0  Actual Class 1
-    Predicted Class 0              48               7
-    Predicted Class 1              18              28
-                 precision    recall  f1-score   support
-    
-              0       0.73      0.87      0.79        55
-              1       0.80      0.61      0.69        46
-    
-    avg / total       0.76      0.75      0.75       101
+| | Precision | Recall | F1-Score | Support 
+---|---|---|---|----
+__0__ | 0.73 | 0.87 | 0.79 | 55
+__1__ | 0.80 | 0.61 | 0.69 | 46
+__avg/total__ | 0.76 | 0.75 | 0.75 | 101
 
 
 Random Forests and Support Vector Machines do best in predicting winners and nonwinners when excluding data from the current contest........
 
 While using past data to predict the outcome of a contest is 
+
+Many non-winners were predicted to win, which is interesting.  This means the past NaNoWriMo data for these writers showed promise that they would win again in the coming NaNoWriMo.  However, they fell short in the first few weeks of the contest which effected their end outcome.  
 
 
 The activity in the first couple weeks of the contest is predictive of winning... can make or break writers who based on how well they performed in the past have good marks with potential to win 
@@ -1194,6 +1250,7 @@ It looks a k of 5 produces the best silhouette score, so the data can best be fi
 While I could not create a very accurate model for predicting whether or not a novel will win based on its synopses or excerpt, I still wanted to do something interesting with all the novel data I had.  So I decided to create a simple recommendation system that, given a writer's NaNoWriMo username, would suggest new genres for the writer to try writing for based on their past.  
 
 Here's a list of...
+
 <div>
 <table border="1" class="dataframe">
   <thead>
