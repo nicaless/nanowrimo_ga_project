@@ -1356,5 +1356,10 @@ Of course, this recommender only works for writers already in my list of writers
 
 ### Next Steps
 more feature engineering of features not based on data from current contest to boost score
+
+figuring out what defines the clusters of writers
+predicting final word count (not just winning or losing)
+
 expand the genre recommender
+
 try more advanced rebalancing the novel data and then trying to fit the data
