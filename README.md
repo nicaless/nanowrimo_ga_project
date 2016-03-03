@@ -1,8 +1,5 @@
 # Predicting NaNoWriMo Winners
 
-- [Table of Contents](#)
-REDO
-
 
 ## Objective
 Every year in November, writers all around the world participate in National Novel Writing Month (NaNoWriMo) and try to write 50,000 words of a novel within 30 days.  They track their word count progress on the NaNoWriMo website where they may also donate to the writing cause, join 'Regions' for writing camaraderie, and display the summary   of their novel in progress.  Those writers who write 50,000 words before the end of November are declared 'Winners'. 
@@ -13,13 +10,11 @@ My goal is to create a machine learning model that can predict whether a partici
 
 I love writing and I am enjoy participating in NaNoWriMo.  This idea stems from another personal project: creating my own [Word Count Tracker](http://nicaless.github.io/2015/11/09/My%20First%20Shiny%20App.html) that would track how much I write over time, similar to that of the cumulative word count graph displayed on each writer's novel profile every NaNoWrimo.  
 
-PICTURE?
 
 I wanted to take it a step further and also visualize the aggregate word count progress of a region and the whole site.
 
 ![Imgur](http://i.imgur.com/XXub2OU.png)
 ![Imgur](http://i.imgur.com/yp0l5VC.png)
-PICTURE
 
 
 Visualizing writing progress can motivate one to write more and reach his or her writing goals!  I hope creating this predictive model may help other writers and future NaNoWriMo participants improve their writing strategies continue to write and finish their novels. 
@@ -797,7 +792,7 @@ Trying to plot reading score of synopses against length of synopses produces thi
 
 As the variable I want to predict is binary (1 if a writer is a winner, 0 if otherwise) I decided to use a logistic regression as my prediction model.  
 
-After extracting only the numerical columns from the writer data, replacing any NaN entries - new writers who don't have data from past NaNoWriMos - with 0, I applied a Standard Scaler to normalize the data.  I then performed an 80/20 split on the data - 400 observations for training and 101 observations for testing.  
+After extracting only the numerical columns from the writer data, replacing any NaN entries - entries belonging new writers who don't have data from past NaNoWriMos - with 0, I applied a Standard Scaler to normalize the data.  I then performed an 80/20 split on the data - 400 observations for training and 101 observations for testing.  
 
 __Cross-Validation Score__
 
@@ -963,7 +958,7 @@ __1__ | 0.74 | 0.43 | 0.55 | 46
 __avg/total__ | 0.69 | 0.67 | 0.65 | 101
 
 
-Naive Bayes is not as accurate as Logistic Regression in this case.  ELABORATE probably because of it's naive assumptions
+Naive Bayes is not as accurate as Logistic Regression in this case.
 
 ### SVM
 
@@ -979,7 +974,7 @@ __1__ | 0.81 | 0.57 | 0.67 | 46
 __avg/total__ | 0.76 | 0.74 | 0.73 | 101
 
                       
-This Support Vector Machine does a little bit better than the Logistic Regression. ELABORATE
+This Support Vector Machine does a little bit better than the Logistic Regression.
 
 ### Decision Tree
 
@@ -1040,10 +1035,10 @@ The Decision Tree did not do as well this time without data from the current con
 
 
 
-This time, the most important feature is Expected Final Word Count, or a writer's.. 
+This time, the most important feature is Expected Final Word Count, or a writer's average final word count over all his or her past NaNoWriMos.
 
 ### Random Forests
-I trained the data on a Random Forest using the same... The Random Forest yielded...
+I trained the data on a Random Forest which yielded the following results.
 
 | | Actual 0 | Actual 1 
 ---|---|---
@@ -1057,18 +1052,16 @@ __1__ | 0.80 | 0.61 | 0.69 | 46
 __avg/total__ | 0.76 | 0.75 | 0.75 | 101
 
 
-Random Forests and Support Vector Machines do best in predicting winners and nonwinners when excluding data from the current contest........
+Random Forests and Support Vector Machines do best in predicting winners and nonwinners when excluding data from the current contest.
 
-While using past data to predict the outcome of a contest is 
+While it's possible past data to predict the outcome of a contest with a good degree of accuracy, including data from the first few weeks of a contest after it starts improves accuracy greatly.  
 
-Many non-winners were predicted to win, which is interesting.  This means the past NaNoWriMo data for these writers showed promise that they would win again in the coming NaNoWriMo.  However, they fell short in the first few weeks of the contest which effected their end outcome.  
-
-
-The activity in the first couple weeks of the contest is predictive of winning... can make or break writers who based on how well they performed in the past have good marks with potential to win 
+Many non-winners were predicted to win for this second model, which is interesting.  This means the past NaNoWriMo data for these writers showed promise that they would win again in the coming NaNoWriMo.  However, they fell short in the first few weeks of the contest which effected their end outcome.  
 
 
-## [Modeling Novel Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/NovelsModeling-Final.ipynb)
-Now that I've created a model to predict which writers will be winners based on their past NaNoWriMo performances, I want to attempt to predict which novels will be winning novels based on what little I know about them: their genre, synopsis, and excerpt.
+## Other Experiments
+### [Modeling Novel Data](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/NovelsModeling-Final.ipynb)
+I wanted to attempt to predict which novels will be winning novels based on what little I know about them: their genre, synopsis, and excerpt.
 
 
 <div>
@@ -1195,47 +1188,31 @@ Now that I've created a model to predict which writers will be winners based on 
 </div>
 
 
-Using only the above text data, DESCRIBE MODELING PROCESS (include pca).  REHIGHLIGHT TROUBLE WITH THE IMBALANCED DATA SET
-
+However, the results for my Logistic Regression were lackluster. 
 
 __Cross-Validation Score__
 
-    0.62544114085
-                       Actual Class 0  Actual Class 1
-    Predicted Class 0               1             158
-    Predicted Class 1               0             266
-                 precision    recall  f1-score   support
-    
-              0       1.00      0.01      0.01       159
-              1       0.63      1.00      0.77       266
-    
-    avg / total       0.77      0.63      0.49       425
-    
-    0.630153121319
+| | Actual 0 | Actual 1 
+---|---|---
+__Predicted 0__ | 1 | 158
+__Predicted 1__ | 0 | 266
+
+| | Precision | Recall | F1-Score | Support 
+---|---|---|---|----
+__0__ | 1.00 | 0.01 | 0.01 | 159
+__1__ | 0.63 | 1.00 | 0.77 | 266
+__avg/total__ | 0.77 | 0.63 | 0.49 | 425
 
 
-
-__Confusion Matrix and Classification Report__
-
-
-__Scoring the Test Date__
-
-
-__ROC Curve__
-
-
-
-The Logistic Regression didn't do too well this time.  SUMMARIZE RESULTS FROM THE OTHER MODELS 
+The Logistic Regression did not do much better than guessing, and other models yielded similar results.  
   
 Maybe it just doesn't make sense to predict if a novel wins just based on it's synopses or excerpt.  Don't judge a book by it's cover I guess.  
 
 
-## [Clusters of Writers](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/K%20Means.ipynb)
+### [Clusters of Writers](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/K%20Means.ipynb)
 
 I've tried classifying writers by whether or not they've "won" or not in the next NaNoWriMo contest, but that sort of dampens the spirit of NaNoWriMo.  It's not just about winning after all.  I want to see what other ways to create clusters of writers with K Means.
 
-
-TALK ABOUT PROCESS OF FITTING DATA TO KMEANS AND CALCULATING SILHOUETTE SCORES 
 
 ![Imgur](http://i.imgur.com/0fvoYHr.png)
 
@@ -1246,10 +1223,10 @@ It looks a k of 5 produces the best silhouette score, so the data can best be fi
 ![Imgur](http://i.imgur.com/57jLKlo.png)
 
 
-## [Genre Recommendation](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/Recommending%20New%20Genres.ipynb)
-While I could not create a very accurate model for predicting whether or not a novel will win based on its synopses or excerpt, I still wanted to do something interesting with all the novel data I had.  So I decided to create a simple recommendation system that, given a writer's NaNoWriMo username, would suggest new genres for the writer to try writing for based on their past.  
+### [Genre Recommendation](https://github.com/nicaless/nanowrimo_ga_project/blob/master/analyze/Recommending%20New%20Genres.ipynb)
+While I could not create a very accurate model for predicting whether or not a novel will win based on its synopses or excerpt, I still wanted to do something interesting with all the novel data I had.  So I started to build a simple recommendation system that, given a writer's NaNoWriMo username, would suggest new genres for the writer to try writing for based on their past.  
 
-Here's a list of...
+Here's a subset of the list of writers and all the genres they've written in past NaNoWriMos.  
 
 <div>
 <table border="1" class="dataframe">
@@ -1290,8 +1267,6 @@ Here's a list of...
 </table>
 </div>
 
-explicit
-
 Below defines a function that calculates the jaccard distance from two different lists of genres.
 
 
@@ -1314,7 +1289,7 @@ def jaccard(a, b):
 
     0.5
 
-EXPLAIN THE ABOVE SCORE
+The above score means that the "distance" between the above two writers' genres is .5.  In other words, half of all the genres written between the two writers are shared between the two.  
 
 I then created a function called _getSimilar_ that uses the jaccard function to calculate the distance between a given writer's list of genres and all other writers' genres and returns a set of suggested genres based on the top ten closes writers.
 
@@ -1349,17 +1324,19 @@ getSimilar("Brandon Sanderson")
 
 Cool! Looks like I have a lot in common with what Brandon Sanderson writes based on our recommendations! 
 
-Of course, this recommender only works for writers already in my list of writers and their known past-written genres, but I'm hoping it's a list that will continue to expand.
+Of course, this recommender only works for writers already in my list of writers and their known past-written genres, but I'm hoping it's a list that will continue to expand so that I can then evaluate the effectiveness of the recommender and make improvements.
 
 
-## Conclusion
+## Next Steps
+I thoroughly enjoyed diving into the NaNoWriMo data and exploring this intersection between my two passions: data science and writing.
 
-### Next Steps
-more feature engineering of features not based on data from current contest to boost score
+Some possible next steps for this project include:
 
-figuring out what defines the clusters of writers
-predicting final word count (not just winning or losing)
-
-expand the genre recommender
-
-try more advanced rebalancing the novel data and then trying to fit the data
+- Collecting more data to see how well the models perform in predicting outcomes for new writers not currently in my data set
+- Performing more feature engineering on the data points excluding the current contest data to see how I can boost model scores
+- Figuring out what are the defining features in the 5 unique clusters of writers discovered from KMeans Clustering
+- Predicting a final word count instead of just a binary win/lose outcome
+- Building out the genre recommender
+- Exploring what features might be better predictive winning novels
+ 	- Are novels in certain genres more likely to win than others?
+ 
