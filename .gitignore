@@ -1,0 +1,35 @@
+.DS_Store
+Exploratory.md
+K Means.md
+Logistic Regression2.zip
+Logistic Regression2/
+Recommending New Genres.md
+Scraping.md
+Screenshot 2016-02-28 11.31.50.png
+Screenshot 2016-02-28 11.34.47.png
+Screenshot 2016-02-28 11.38.36.png
+Screenshot 2016-02-28 15.23.15.png
+Screenshot 2016-02-28 15.23.26.png
+Screenshot 2016-02-28 15.29.44.png
+Screenshot 2016-02-28 15.40.25.png
+Screenshot 2016-02-28 15.47.18.png
+Screenshot 2016-02-28 17.01.30.png
+Shield-Nano-Blue-Brown-RGB-HiRes.png
+TheDataProcessingProcess.md
+analyze/.ipynb_checkpoints/
+analyze/kmeans
+clean data/.DS_Store
+clean/.DS_Store
+clean/.ipynb_checkpoints/
+exploratoryanalysis.zip
+exploratoryanalysis/
+rawdata/novel_summary.csv
+scrape/.DS_Store
+scrape/.ipynb_checkpoints/
+scrape/novel_names_urls_dates.csv
+scrape/novel_urls.csv
+scrape/novels_all_info.csv
+scrape/novels_all_info2.csv
+scrape/scraper1.py
+scrape/user_names.csv
+testfk.py
